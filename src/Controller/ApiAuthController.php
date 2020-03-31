@@ -8,22 +8,22 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class SignupController
+class ApiAuthController
 {
     /**
-     * @Route("/connect/signup", name="connect_signup_start")
+     * @Route("/connect/api-auth", name="connect_api-auth_start")
      */
     public function connectAction(ClientRegistry $clientRegistry)
     {
-        return $clientRegistry->getClient('signup')->redirect([], []);
+        return $clientRegistry->getClient('api-auth')->redirect([], []);
     }
 
     /**
-     * @Route("/connect/signup/check", name="connect_signup_check")
+     * @Route("/connect/api-auth/check", name="connect_api-auth_check")
      */
-    public function connectCheckAction(Request $request, ClientRegistry $clientRegistry)
+    public function connectCheckAction(ClientRegistry $clientRegistry)
     {
-        $client = $clientRegistry->getClient('signup');
+        $client = $clientRegistry->getClient('api-auth');
 
         try {
             $user = $client->fetchUser();

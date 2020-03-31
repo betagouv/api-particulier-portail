@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Signup;
+namespace App\ApiAuth;
 
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 
@@ -49,6 +49,11 @@ class ResourceOwner implements ResourceOwnerInterface
     public function getId(): string
     {
         return $this->sub;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
     }
 
     public function toArray(): array

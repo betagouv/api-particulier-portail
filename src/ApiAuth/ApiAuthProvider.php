@@ -1,15 +1,13 @@
 <?php
 
-namespace App\Signup;
+namespace App\ApiAuth;
 
 use League\OAuth2\Client\Provider\AbstractProvider;
-use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Token\AccessToken;
 use League\OAuth2\Client\Tool\BearerAuthorizationTrait;
 use Psr\Http\Message\ResponseInterface;
-use Symfony\Component\HttpFoundation\Response;
 
-class SignupProvider extends AbstractProvider
+class ApiAuthProvider extends AbstractProvider
 {
     use BearerAuthorizationTrait;
     const ACCESS_TOKEN_RESOURCE_OWNER_ID = "sub";
