@@ -36,10 +36,6 @@ class SignupProvider extends AbstractProvider
 
     protected function checkResponse(ResponseInterface $response, $data)
     {
-        $responseIsValid = $response->getStatusCode() === Response::HTTP_OK && isset($data["access_token"]) && isset($data["id_token"]) && isset($data["scope"]);
-        if ($responseIsValid)
-            return;
-        throw new IdentityProviderException("Failed to authenticate", Response::HTTP_UNAUTHORIZED, []);
     }
 
     protected function createResourceOwner(array $response, AccessToken $token)

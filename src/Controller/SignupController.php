@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -26,8 +27,7 @@ class SignupController
 
         try {
             $user = $client->fetchUser();
-            var_dump($user->toArray());
-            die;
+            return new JsonResponse($user->toArray());
         } catch (IdentityProviderException $e) {
             var_dump($e->getMessage());
         }
