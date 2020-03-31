@@ -1,0 +1,11 @@
+easy_admin:
+  site_name: '<img src="https://particulier.api.gouv.fr/img/logo-particulier-api.svg" width="400" />'
+  user:
+    name_property_path: "email"
+  entities:
+    User:
+      class: App\Entity\User
+      show:
+        fields:
+          - email
+          - roles
