@@ -2,5 +2,10 @@ App\Entity\ApiKey:
   creche_paris_key_1:
     active: true
     expiresAt: "<identity((new DateTime())->modify('+1 year'))>"
-    hashedKey: "yolo"
+    hash: "yolo"
+    application: "@creche_paris"
+  creche_paris_key_2:
+    active: false
+    expiresAt: "<identity((new DateTime())->modify('+1 year'))>"
+    hash: "georges"
     application: "@creche_paris"

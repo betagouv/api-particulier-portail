@@ -7,3 +7,7 @@ App\Entity\Api:
     name: "API Entreprise"
     backend: "https://entreprise.data.gouv.fr/api"
     path: "/entreprise"
+  poke_api:
+    name: "Pokedex API"
+    backend: "https://pokeapi.co/api/v2"
+    path: "/poke"
