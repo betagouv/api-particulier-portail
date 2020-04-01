@@ -1,0 +1,5 @@
+App\Entity\Organization:
+  mairie_de_paris:
+    siret: "21750001600019"
+  mairie_de_ville_la_grand:
+    siret: "21740305400018"

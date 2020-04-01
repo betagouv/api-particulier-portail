@@ -1,0 +1,5 @@
+App\Entity\Scope:
+  geo:
+    name: "geo"
+  entreprise:
+    name: "entreprise"
