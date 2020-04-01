@@ -15,6 +15,11 @@ class ApiRoutesTest extends WebTestCase
 
         $client->request("GET", "/api/geo/communes/74305");
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $response = $client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+
+        $content = json_decode($response->getContent(), true);
+
+        $this->assertEquals("Ville-la-Grand", $content["nom"]);
     }
 }

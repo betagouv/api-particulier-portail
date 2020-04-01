@@ -28,3 +28,8 @@ services:
 
   App\Routing\ApiRoutesLoader:
     tags: [routing.loader]
+
+  App\Controller\ApiController:
+    arguments:
+      $proxiedHttpHeaders: "%proxied_http_headers%"
+    tags: ["controller.service_arguments"]
