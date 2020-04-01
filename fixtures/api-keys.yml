@@ -1,0 +1,6 @@
+App\Entity\ApiKey:
+  creche_paris_key_1:
+    active: true
+    expiresAt: "<identity((new DateTime())->modify('+1 year'))>"
+    hashedKey: "yolo"
+    application: "@creche_paris"

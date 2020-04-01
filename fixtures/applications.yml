@@ -1,0 +1,8 @@
+App\Entity\Application:
+  creche_paris:
+    name: "Inscription en crèche de la ville de Paris"
+    signupId: 123
+    organization: "@mairie_de_paris"
+    scopes:
+      - "@geo"
+      - "@entreprise"
