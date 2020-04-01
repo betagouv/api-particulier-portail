@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -26,6 +28,16 @@ class User implements UserInterface
      * @ORM\Column(type="json")
      */
     private $roles = [];
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\UserPosition", mappedBy="user", orphanRemoval=true)
+     */
+    private $userPositions;
+
+    public function __construct()
+    {
+        $this->userPositions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -96,5 +108,36 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection|UserPosition[]
+     */
+    public function getUserPositions(): Collection
+    {
+        return $this->userPositions;
+    }
+
+    public function addUserPosition(UserPosition $userPosition): self
+    {
+        if (!$this->userPositions->contains($userPosition)) {
+            $this->userPositions[] = $userPosition;
+            $userPosition->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserPosition(UserPosition $userPosition): self
+    {
+        if ($this->userPositions->contains($userPosition)) {
+            $this->userPositions->removeElement($userPosition);
+            // set the owning side to null (unless already changed)
+            if ($userPosition->getUser() === $this) {
+                $userPosition->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }
