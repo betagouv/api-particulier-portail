@@ -1,0 +1,6 @@
+parameters:
+  proxied_http_headers:
+    - Content-Type
+    - Etag
+    - Vary
+    - Date
