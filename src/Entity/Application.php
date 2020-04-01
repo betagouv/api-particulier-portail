@@ -49,11 +49,17 @@ class Application
      */
     private $userPositions;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Subscription", mappedBy="application", orphanRemoval=true)
+     */
+    private $subscriptions;
+
     public function __construct()
     {
         $this->scopes = new ArrayCollection();
         $this->apiKeys = new ArrayCollection();
         $this->userPositions = new ArrayCollection();
+        $this->subscriptions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -179,6 +185,37 @@ class Application
             // set the owning side to null (unless already changed)
             if ($userPosition->getApplication() === $this) {
                 $userPosition->setApplication(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Subscription[]
+     */
+    public function getSubscriptions(): Collection
+    {
+        return $this->subscriptions;
+    }
+
+    public function addSubscription(Subscription $subscription): self
+    {
+        if (!$this->subscriptions->contains($subscription)) {
+            $this->subscriptions[] = $subscription;
+            $subscription->setApplication($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubscription(Subscription $subscription): self
+    {
+        if ($this->subscriptions->contains($subscription)) {
+            $this->subscriptions->removeElement($subscription);
+            // set the owning side to null (unless already changed)
+            if ($subscription->getApplication() === $this) {
+                $subscription->setApplication(null);
             }
         }
 

@@ -1,0 +1,9 @@
+App\Entity\Api:
+  geo_api:
+    name: "API Geo"
+    backend: "https://geo.api.gouv.fr"
+    path: "/geo"
+  entreprise_api:
+    name: "API Entreprise"
+    backend: "https://entreprise.data.gouv.fr/api"
+    path: "/entreprise"
