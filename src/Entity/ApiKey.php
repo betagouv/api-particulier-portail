@@ -17,11 +17,6 @@ class ApiKey
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $hashedKey;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $expiresAt;
@@ -37,21 +32,14 @@ class ApiKey
      */
     private $application;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $hash;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getHashedKey(): ?string
-    {
-        return $this->hashedKey;
-    }
-
-    public function setHashedKey(string $hashedKey): self
-    {
-        $this->hashedKey = $hashedKey;
-
-        return $this;
     }
 
     public function getExpiresAt(): ?\DateTimeInterface
@@ -93,5 +81,17 @@ class ApiKey
     public function __toString()
     {
         return $this->hashedKey;
+    }
+
+    public function getHash(): ?string
+    {
+        return $this->hash;
+    }
+
+    public function setHash(string $hash): self
+    {
+        $this->hash = $hash;
+
+        return $this;
     }
 }

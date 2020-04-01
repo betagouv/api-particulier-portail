@@ -7,3 +7,7 @@ App\Entity\Subscription:
     api: "@entreprise_api"
     application: "@creche_paris"
     active: true
+  creche_paris_poke_subscription:
+    api: "@poke_api"
+    application: "@creche_paris"
+    active: false

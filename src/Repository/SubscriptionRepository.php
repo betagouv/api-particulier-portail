@@ -2,6 +2,9 @@
 
 namespace App\Repository;
 
+use App\Entity\Api;
+use App\Entity\ApiKey;
+use App\Entity\Application;
 use App\Entity\Subscription;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -17,6 +20,23 @@ class SubscriptionRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Subscription::class);
+    }
+
+    public function activeSubscriptionExistsForApiKeyHashAndPath(string $apiKeyHash, string $path)
+    {
+        $qb = $this->createQueryBuilder("s")
+            ->select("count(s.id)")
+            ->innerJoin(Api::class, "api", "WITH", "s.api = api.id")
+            ->where("api.path = :path")
+            ->innerJoin(Application::class, "app", "WITH", "app.id = s.application")
+            ->innerJoin(ApiKey::class, "apiKey", "WITH", "apiKey.application = app.id")
+            ->andWhere("apiKey.hash = :hash")
+            ->andWhere("apiKey.active = true")
+            ->andWhere("s.active = true")
+            ->setParameter("path", $path)
+            ->setParameter("hash", $apiKeyHash);
+
+        return $qb->getQuery()->getSingleScalarResult() > 0;
     }
 
     // /**
