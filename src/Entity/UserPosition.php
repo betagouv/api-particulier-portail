@@ -77,4 +77,9 @@ class UserPosition
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return $this->role;
+    }
 }

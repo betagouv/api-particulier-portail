@@ -3,9 +3,19 @@ easy_admin:
   user:
     name_property_path: "email"
   entities:
+    Api:
+      class: App\Entity\Api
+    ApiKey:
+      class: App\Entity\ApiKey
+    Application:
+      class: App\Entity\Application
+    Organization:
+      class: App\Entity\Organization
+    Scope:
+      class: App\Entity\Scope
+    Subscription:
+      class: App\Entity\Subscription
+    UserPosition:
+      class: App\Entity\UserPosition
     User:
       class: App\Entity\User
-      show:
-        fields:
-          - email
-          - roles
