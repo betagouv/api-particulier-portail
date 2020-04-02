@@ -7,6 +7,7 @@
         "ext-iconv": "*",
         "easycorp/easyadmin-bundle": "^2.3",
         "knpuniversity/oauth2-client-bundle": "^2.0",
+        "league/oauth2-server": "^8.0",
         "ramsey/uuid-doctrine": "^1.6",
         "sensio/framework-extra-bundle": "^5.5",
         "stof/doctrine-extensions-bundle": "^1.4",
