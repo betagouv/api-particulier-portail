@@ -12,6 +12,7 @@ class ApiRoutesTest extends WebTestCase
     public function testGeoRoute()
     {
         $client = static::createClient();
+        $apiKey = self::$container->getParameter("active_api_key");
 
         $client->request(
             "GET",
@@ -19,7 +20,7 @@ class ApiRoutesTest extends WebTestCase
             [],
             [],
             [
-                "HTTP_X-Api-Key" => "yolo"
+                "HTTP_X-Api-Key" => $apiKey
             ]
         );
 

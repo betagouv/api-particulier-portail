@@ -20,13 +20,15 @@ class ApiKeyAuthenticatorTest extends WebTestCase
 
     public function testValidApiKeyAndApiPath()
     {
+        $apiKey = self::$container->getParameter("active_api_key");
+
         $this->client->request(
             "GET",
             "/api/geo/communes/74305",
             [],
             [],
             [
-                "HTTP_X-Api-Key" => "yolo"
+                "HTTP_X-Api-Key" => $apiKey
             ]
         );
 
@@ -35,13 +37,15 @@ class ApiKeyAuthenticatorTest extends WebTestCase
 
     public function testInvalidApiKey()
     {
+        $apiKey = self::$container->getParameter("inactive_api_key");
+
         $this->client->request(
             "GET",
             "/api/geo/communes/74305",
             [],
             [],
             [
-                "HTTP_X-Api-Key" => "croute"
+                "HTTP_X-Api-Key" => $apiKey
             ]
         );
 

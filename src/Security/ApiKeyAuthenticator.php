@@ -19,11 +19,17 @@ class ApiKeyAuthenticator extends AbstractGuardAuthenticator
      */
     private $applicationRepository;
 
+    /**
+     * @var ApiKeyEncoder
+     */
+    private $apiKeyEncoder;
+
     const HEADER_NAME = "X-Api-Key";
 
-    public function __construct(ApplicationRepository $applicationRepository)
+    public function __construct(ApplicationRepository $applicationRepository, ApiKeyEncoder $apiKeyEncoder)
     {
         $this->applicationRepository = $applicationRepository;
+        $this->apiKeyEncoder = $apiKeyEncoder;
     }
 
     public function supports(Request $request)
@@ -47,6 +53,8 @@ class ApiKeyAuthenticator extends AbstractGuardAuthenticator
             return null;
         }
 
+        $this->apiKeyEncoder->encodeString("yolo");
+
         return [
             "path" => $components[2],
             "apiKey" => $apiKey
@@ -61,9 +69,11 @@ class ApiKeyAuthenticator extends AbstractGuardAuthenticator
             return null;
         }
 
+        $apiKeyHash = $this->apiKeyEncoder->encodeString($credentials["apiKey"]);
+
         // if an Application is returned, checkCredentials() is called
         return $this->applicationRepository->findOneByApiKeyHashAndApiPath(
-            $credentials["apiKey"],
+            $apiKeyHash,
             $credentials["path"]
         );
     }
