@@ -10,6 +10,8 @@ use Ramsey\Uuid\UuidInterface;
  */
 class Subscription
 {
+    use EntityTimestampableTrait;
+
     /**
      * @ORM\Id()
      * @ORM\Column(type="uuid", unique=true)

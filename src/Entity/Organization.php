@@ -12,6 +12,8 @@ use Ramsey\Uuid\UuidInterface;
  */
 class Organization
 {
+    use EntityTimestampableTrait;
+
     /**
      * @ORM\Id()
      * @ORM\Column(type="uuid", unique=true)
