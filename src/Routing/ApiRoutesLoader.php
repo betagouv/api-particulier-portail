@@ -29,7 +29,7 @@ class ApiRoutesLoader extends Loader
         $apis = $this->apiRepository->findAll();
 
         foreach ($apis as $api) {
-            $path = sprintf("/api%s/{uri}", $api->getPath());
+            $path = sprintf("/api/%s/{uri}", $api->getPath());
             $defaults = [
                 "_controller" => "App\Controller\ApiController::backend",
                 "backend" => $api->getBackend()

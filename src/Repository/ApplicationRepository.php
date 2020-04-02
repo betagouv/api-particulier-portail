@@ -2,7 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Api;
+use App\Entity\ApiKey;
 use App\Entity\Application;
+use App\Entity\Subscription;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -17,6 +20,23 @@ class ApplicationRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Application::class);
+    }
+
+    public function findOneByApiKeyHashAndApiPath(string $apiKeyHash, string $apiPath)
+    {
+        $qb = $this->createQueryBuilder("app")
+            ->select("app")
+            ->innerJoin(Subscription::class, "s", "WITH", "s.application = app.id")
+            ->innerJoin(Api::class, "api", "WITH", "s.api = api.id")
+            ->where("api.path = :path")
+            ->innerJoin(ApiKey::class, "apiKey", "WITH", "apiKey.application = app.id")
+            ->andWhere("apiKey.hash = :hash")
+            ->andWhere("apiKey.active = true")
+            ->andWhere("s.active = true")
+            ->setParameter("path", $apiPath)
+            ->setParameter("hash", $apiKeyHash);
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
 
     // /**

@@ -2,8 +2,7 @@
 
 namespace App\Security;
 
-use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\ApplicationRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,15 +15,15 @@ use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 class ApiKeyAuthenticator extends AbstractGuardAuthenticator
 {
     /**
-     * @var EntityManagerInterface
+     * @var ApplicationRepository
      */
-    private $em;
+    private $applicationRepository;
 
     const HEADER_NAME = "X-Api-Key";
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(ApplicationRepository $applicationRepository)
     {
-        $this->em = $em;
+        $this->applicationRepository = $applicationRepository;
     }
 
     public function supports(Request $request)
@@ -34,7 +33,24 @@ class ApiKeyAuthenticator extends AbstractGuardAuthenticator
 
     public function getCredentials(Request $request)
     {
-        return $request->headers->get(self::HEADER_NAME);
+        $apiKey = $request->headers->get(self::HEADER_NAME);
+
+
+        if (is_null($apiKey)) {
+            return null;
+        }
+
+        $components = explode("/", $request->getPathInfo());
+
+        // Expect at least 4 components, the request looks like "/api/{the target API path}/{the target API URI}"
+        if (count($components) < 4) {
+            return null;
+        }
+
+        return [
+            "path" => $components[2],
+            "apiKey" => $apiKey
+        ];
     }
 
     public function getUser($credentials, UserProviderInterface $userProvider)
@@ -45,9 +61,11 @@ class ApiKeyAuthenticator extends AbstractGuardAuthenticator
             return null;
         }
 
-        // if a User is returned, checkCredentials() is called
-        return $this->em->getRepository(User::class)
-            ->findOneBy(['apiToken' => $credentials]);
+        // if an Application is returned, checkCredentials() is called
+        return $this->applicationRepository->findOneByApiKeyHashAndApiPath(
+            $credentials["apiKey"],
+            $credentials["path"]
+        );
     }
 
     public function checkCredentials($credentials, UserInterface $user)
