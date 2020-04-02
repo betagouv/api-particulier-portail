@@ -4,6 +4,7 @@ namespace App\Tests\Unit\Security;
 
 use App\Repository\ApplicationRepository;
 use App\Security\ApiKeyAuthenticator;
+use App\Security\ApiKeyEncoder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,6 +17,11 @@ class ApiKeyAuthenticatorTest extends TestCase
     private $applicationRepository;
 
     /**
+     * @var ApiKeyEncoder|MockObject
+     */
+    private $apiKeyEncoder;
+
+    /**
      * @var ApiKeyAuthenticator
      */
     private $apiKeyAuthenticator;
@@ -26,7 +32,14 @@ class ApiKeyAuthenticatorTest extends TestCase
          * @var ApplicationRepository $applicationRepository
          */
         $this->applicationRepository = $this->createMock(ApplicationRepository::class);
-        $this->apiKeyAuthenticator = new ApiKeyAuthenticator($this->applicationRepository);
+        /**
+         * @var ApiKeyEncoder $apiKeyEncoder
+         */
+        $this->apiKeyEncoder = $this->createMock(ApiKeyEncoder::class);
+        $this->apiKeyAuthenticator = new ApiKeyAuthenticator(
+            $this->applicationRepository,
+            $this->apiKeyEncoder
+        );
     }
 
     public function testCorrectCredentials()
