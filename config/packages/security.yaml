@@ -33,5 +33,7 @@ security:
   access_control:
     # - { path: ^/admin, roles: ROLE_ADMIN }
     - { path: ^/connect, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/authorize, roles: IS_AUTHENTICATED_REMEMBERED }
+    - { path: ^/token, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/api, roles: ROLE_APPLICATION }
     - { path: ^/, roles: ROLE_USER }
