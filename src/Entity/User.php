@@ -13,6 +13,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User implements UserInterface
 {
+    use EntityTimestampableTrait;
+
     /**
      * @ORM\Id()
      * @ORM\Column(type="uuid", unique=true)

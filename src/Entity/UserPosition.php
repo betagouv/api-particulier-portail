@@ -11,6 +11,8 @@ use Ramsey\Uuid\UuidInterface;
  */
 class UserPosition
 {
+    use EntityTimestampableTrait;
+
     /**
      * @ORM\Id()
      * @ORM\Column(type="uuid", unique=true)
