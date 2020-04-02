@@ -7,6 +7,7 @@
         "ext-iconv": "*",
         "easycorp/easyadmin-bundle": "^2.3",
         "knpuniversity/oauth2-client-bundle": "^2.0",
+        "nyholm/psr7": "^1.2",
         "ramsey/uuid-doctrine": "^1.6",
         "sensio/framework-extra-bundle": "^5.5",
         "stof/doctrine-extensions-bundle": "^1.4",
@@ -17,7 +18,8 @@
         "symfony/http-client": "5.0.*",
         "symfony/orm-pack": "^1.0",
         "symfony/twig-pack": "^1.0",
-        "symfony/yaml": "5.0.*"
+        "symfony/yaml": "5.0.*",
+        "trikoder/oauth2-bundle": "^3.0"
     },
     "require-dev": {
         "hautelook/alice-bundle": "^2.7",
