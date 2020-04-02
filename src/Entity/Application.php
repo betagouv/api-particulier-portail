@@ -5,11 +5,12 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ApplicationRepository")
  */
-class Application
+class Application implements UserInterface
 {
     /**
      * @ORM\Id()
@@ -220,6 +221,28 @@ class Application
         }
 
         return $this;
+    }
+
+    public function getRoles()
+    {
+        return ['ROLE_APPLICATION'];
+    }
+
+    public function getPassword()
+    {
+    }
+
+    public function getSalt()
+    {
+    }
+
+    public function getUsername()
+    {
+        return $this->name;
+    }
+
+    public function eraseCredentials()
+    {
     }
 
     public function __toString()

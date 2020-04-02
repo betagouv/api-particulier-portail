@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Controller;
+namespace App\Tests\Functional\Controller;
 
 use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -13,7 +13,15 @@ class ApiRoutesTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $client->request("GET", "/api/geo/communes/74305");
+        $client->request(
+            "GET",
+            "/api/geo/communes/74305",
+            [],
+            [],
+            [
+                "HTTP_X-Api-Key" => "yolo"
+            ]
+        );
 
         $response = $client->getResponse();
         $this->assertEquals(200, $response->getStatusCode());

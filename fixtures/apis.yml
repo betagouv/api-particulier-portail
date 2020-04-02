@@ -2,12 +2,12 @@ App\Entity\Api:
   geo_api:
     name: "API Geo"
     backend: "https://geo.api.gouv.fr"
-    path: "/geo"
+    path: "geo"
   entreprise_api:
     name: "API Entreprise"
     backend: "https://entreprise.data.gouv.fr/api"
-    path: "/entreprise"
+    path: "entreprise"
   poke_api:
     name: "Pokedex API"
     backend: "https://pokeapi.co/api/v2"
-    path: "/poke"
+    path: "poke"
