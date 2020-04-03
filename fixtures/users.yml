@@ -1,0 +1,3 @@
+App\Entity\User:
+  jean_moust:
+    email: "jean@moust.com"

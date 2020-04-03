@@ -21,7 +21,13 @@ security:
       guard:
         authenticators:
           - App\Security\ApiKeyAuthenticator
-    main:
+    oauth:
+      provider: app_user_provider
+      security: true
+      stateless: true
+      pattern: ^/oauth/userinfo
+      oauth2: true
+    user:
       anonymous: lazy
       provider: app_user_provider
       guard:
@@ -33,7 +39,8 @@ security:
   access_control:
     # - { path: ^/admin, roles: ROLE_ADMIN }
     - { path: ^/connect, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-    - { path: ^/authorize, roles: IS_AUTHENTICATED_REMEMBERED }
-    - { path: ^/token, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/oauth/authorize, roles: IS_AUTHENTICATED_REMEMBERED }
+    - { path: ^/oauth/token, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/oauth/userinfo, roles: ROLE_USER }
     - { path: ^/api, roles: ROLE_APPLICATION }
     - { path: ^/, roles: ROLE_USER }
