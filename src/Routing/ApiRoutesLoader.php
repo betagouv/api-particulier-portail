@@ -32,7 +32,8 @@ class ApiRoutesLoader extends Loader
             $path = sprintf("/api/%s/{uri}", $api->getPath());
             $defaults = [
                 "_controller" => "App\Controller\ApiController::backend",
-                "backend" => $api->getBackend()
+                "backend" => $api->getBackend(),
+                "apiId" => $api->getId()->toString()
             ];
             $requirements = [
                 "uri" => ".+"

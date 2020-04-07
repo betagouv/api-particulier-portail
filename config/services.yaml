@@ -33,3 +33,10 @@ services:
     arguments:
       $proxiedHttpHeaders: "%proxied_http_headers%"
     tags: ["controller.service_arguments"]
+
+  InfluxDB\Client:
+    arguments:
+      - "localhost"
+      - 8086
+      - "portal"
+      - "portal"
