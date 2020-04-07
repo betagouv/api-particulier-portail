@@ -85,7 +85,7 @@ class ApiKey
 
     public function __toString()
     {
-        return $this->hashedKey;
+        return $this->hash;
     }
 
     public function getHash(): ?string
