@@ -2,12 +2,15 @@
 
 namespace App\Tests\Functional\Security;
 
+use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 class ApiKeyAuthenticatorTest extends WebTestCase
 {
+    use RefreshDatabaseTrait;
+
     /**
      * @var KernelBrowser
      */
