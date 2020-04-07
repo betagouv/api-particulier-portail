@@ -1,13 +1,13 @@
 <?php
 
-namespace App\ApiAuth;
+namespace App\AuthApi;
 
 use League\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Token\AccessToken;
 use League\OAuth2\Client\Tool\BearerAuthorizationTrait;
 use Psr\Http\Message\ResponseInterface;
 
-class ApiAuthProvider extends AbstractProvider
+class AuthApiProvider extends AbstractProvider
 {
     use BearerAuthorizationTrait;
     const ACCESS_TOKEN_RESOURCE_OWNER_ID = "sub";
@@ -41,6 +41,13 @@ class ApiAuthProvider extends AbstractProvider
         $organizations = array_map(function (array $organization) {
             return $organization["siret"];
         }, $response["organizations"]);
-        return new ResourceOwner($response["sub"], $response["family_name"], $response["given_name"], $response["email"], $response["roles"], $organizations);
+        return new ResourceOwner(
+            $response["sub"],
+            $response["given_name"],
+            $response["family_name"],
+            $response["email"],
+            $response["roles"],
+            $organizations
+        );
     }
 }

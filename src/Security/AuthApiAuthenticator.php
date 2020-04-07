@@ -3,7 +3,7 @@
 namespace App\Security;
 
 use App\Entity\User;
-use App\ApiAuth\ResourceOwner;
+use App\AuthApi\ResourceOwner;
 use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\SocialAuthenticator;
@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class ApiAuthAuthenticator extends SocialAuthenticator
+class AuthApiAuthenticator extends SocialAuthenticator
 {
     /**
      * @var ClientRegistry
@@ -42,34 +42,32 @@ class ApiAuthAuthenticator extends SocialAuthenticator
     public function supports(Request $request)
     {
         // continue ONLY if the current ROUTE matches the check ROUTE
-        return $request->attributes->get('_route') === 'connect_api-auth_check';
+        return $request->attributes->get('_route') === 'connect_auth-api_check';
     }
 
     public function getCredentials(Request $request)
     {
-        return $this->fetchAccessToken($this->getApiAuthClient());
+        return $this->fetchAccessToken($this->getAuthApiClient());
     }
 
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
         /**
-         * @var ResourceOwner $apiAuthUser
+         * @var ResourceOwner $authApiUser
          */
-        $apiAuthUser = $this->getApiAuthClient()
+        $authApiUser = $this->getAuthApiClient()
             ->fetchUserFromToken($credentials);
-
-        $email = $apiAuthUser->getEmail();
 
         // 1) Check if we already know the user
         $existingUser = $this->em->getRepository(User::class)
-            ->findOneBy(['email' => $apiAuthUser->getEmail()]);
+            ->findOneBy(['email' => $authApiUser->getEmail()]);
         if ($existingUser) {
             return $existingUser;
         }
 
         // 2) If not, let's create them
         $user = new User();
-        $user->setEmail($apiAuthUser->getEmail());
+        $user->setEmail($authApiUser->getEmail());
         $this->em->persist($user);
         $this->em->flush();
 
@@ -93,13 +91,13 @@ class ApiAuthAuthenticator extends SocialAuthenticator
     public function start(Request $request, AuthenticationException $authException = null)
     {
         return new RedirectResponse(
-            '/connect/api-auth',
+            '/connect/auth-api',
             Response::HTTP_TEMPORARY_REDIRECT
         );
     }
 
-    private function getApiAuthClient()
+    private function getAuthApiClient()
     {
-        return $this->clientRegistry->getClient('api-auth');
+        return $this->clientRegistry->getClient('auth-api');
     }
 }

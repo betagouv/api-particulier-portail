@@ -1,6 +1,6 @@
 <?php
 
-namespace App\ApiAuth;
+namespace App\AuthApi;
 
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 
@@ -19,7 +19,7 @@ class ResourceOwner implements ResourceOwnerInterface
     /**
      * @var string
      */
-    private $givenName;
+    private $surname;
 
     /**
      * @var string
@@ -36,11 +36,11 @@ class ResourceOwner implements ResourceOwnerInterface
      */
     private $organizations;
 
-    public function __construct(string $sub, string $name, string $givenName, string $email, array $roles, array $organizations)
+    public function __construct(string $sub, string $name, string $surname, string $email, array $roles, array $organizations)
     {
         $this->sub = $sub;
         $this->name = $name;
-        $this->givenName = $givenName;
+        $this->surname = $surname;
         $this->email = $email;
         $this->roles = $roles;
         $this->organizations = $organizations;
@@ -56,12 +56,22 @@ class ResourceOwner implements ResourceOwnerInterface
         return $this->email;
     }
 
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getSurname(): string
+    {
+        return $this->surname;
+    }
+
     public function toArray(): array
     {
         return [
             "id" => $this->getId(),
             "name" => $this->name,
-            "given_name" => $this->givenName,
+            "surname" => $this->surname,
             "email" => $this->email,
             "roles" => $this->roles,
             "organizations" => $this->organizations
