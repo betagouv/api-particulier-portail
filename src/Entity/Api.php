@@ -47,6 +47,13 @@ class Api
         $this->subscriptions = new ArrayCollection();
     }
 
+    public function setId(UuidInterface $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
     public function getId(): ?UuidInterface
     {
         return $this->id;
