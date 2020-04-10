@@ -16,3 +16,7 @@ framework:
     log: true
   http_client:
     max_host_connections: 10
+  cache:
+    pools:
+      cache.doctrine:
+        adapter: cache.adapter.redis

@@ -8,6 +8,7 @@
         "easycorp/easyadmin-bundle": "^2.3",
         "knpuniversity/oauth2-client-bundle": "^2.0",
         "nyholm/psr7": "^1.2",
+        "predis/predis": "^1.1",
         "ramsey/uuid-doctrine": "^1.6",
         "sensio/framework-extra-bundle": "^5.5",
         "stof/doctrine-extensions-bundle": "^1.4",
