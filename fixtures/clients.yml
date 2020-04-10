@@ -1,0 +1,8 @@
+Trikoder\Bundle\OAuth2Bundle\Model\Client:
+  client1:
+    __construct:
+      identifier: the-test-client
+      secret: 7819ce4d84be54cc0fd1b23b6c636b4e67a20d97483970e224002d60c4c0e7fde6f1af33e26576bfe088d44d6245f0c8e28473cb7475e6d06874d624b252fe9e
+    redirect_uris: "<identity(new Trikoder\\Bundle\\OAuth2Bundle\\Model\\RedirectUri('http://localhost:3000/login/generic_oauth'))>"
+    grants: "<identity(new Trikoder\\Bundle\\OAuth2Bundle\\Model\\Grant('authorization_code'))>"
+    active: true

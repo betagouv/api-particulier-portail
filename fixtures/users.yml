@@ -1,3 +1,5 @@
 App\Entity\User:
   jean_moust:
+    name: "Jean"
+    surname: "Moust"
     email: "jean@moust.com"

@@ -31,6 +31,23 @@ class UserRepository
         return $users;
     }
 
+    public function findByEmail(string $email)
+    {
+        $response = $this->client->request(
+            "GET",
+            "/api/users/search",
+            [
+                "query" => [
+                    "query" => $email
+                ]
+            ]
+        );
+
+        $userSearch = json_decode($response->getContent(), true);
+
+        return $userSearch;
+    }
+
     public function createUser(string $name, string $email)
     {
         $response = $this->client->request(
@@ -41,7 +58,7 @@ class UserRepository
                     "name" => $name,
                     "email" => $email,
                     "login" => $email,
-                    "password" => "yolo"
+                    "password" => md5(rand())
                 ]
             ]
         );
@@ -49,5 +66,15 @@ class UserRepository
         $user = json_decode($response->getContent(), true);
 
         return $user;
+    }
+
+    public function createIfNotExists(string $name, string $email)
+    {
+        $existingUsers = $this->findByEmail($email);
+        if ($existingUsers["totalCount"] > 0) {
+            return;
+        }
+
+        $this->createUser($name, $email);
     }
 }

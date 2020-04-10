@@ -4,9 +4,11 @@ namespace App\Security;
 
 use App\Entity\User;
 use App\AuthApi\ResourceOwner;
+use App\Event\UserCreatedEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\SocialAuthenticator;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,11 +34,21 @@ class AuthApiAuthenticator extends SocialAuthenticator
      */
     private $router;
 
-    public function __construct(ClientRegistry $clientRegistry, EntityManagerInterface $em, RouterInterface $router)
-    {
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    public function __construct(
+        ClientRegistry $clientRegistry,
+        EntityManagerInterface $em,
+        RouterInterface $router,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->clientRegistry = $clientRegistry;
         $this->em = $em;
         $this->router = $router;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function supports(Request $request)
@@ -68,8 +80,12 @@ class AuthApiAuthenticator extends SocialAuthenticator
         // 2) If not, let's create them
         $user = new User();
         $user->setEmail($authApiUser->getEmail());
+        $user->setName($authApiUser->getName());
+        $user->setSurname($authApiUser->getSurname());
         $this->em->persist($user);
         $this->em->flush();
+
+        $this->eventDispatcher->dispatch(new UserCreatedEvent($user));
 
         return $user;
     }
