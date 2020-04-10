@@ -14,6 +14,8 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  */
 class OrganizationRepository extends ServiceEntityRepository
 {
+    use CachedFindTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Organization::class);
