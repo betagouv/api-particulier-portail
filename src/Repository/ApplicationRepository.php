@@ -36,7 +36,10 @@ class ApplicationRepository extends ServiceEntityRepository
             ->setParameter("path", $apiPath)
             ->setParameter("hash", $apiKeyHash);
 
-        return $qb->getQuery()->getOneOrNullResult();
+        $query = $qb->getQuery();
+        $query->useResultCache(true);
+
+        return $query->getOneOrNullResult();
     }
 
     // /**
