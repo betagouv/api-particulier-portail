@@ -38,6 +38,16 @@ class User implements UserInterface
      */
     private $userPositions;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $name;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $surname;
+
     public function __construct()
     {
         $this->userPositions = new ArrayCollection();
@@ -148,5 +158,34 @@ class User implements UserInterface
     public function __toString()
     {
         return $this->email;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getSurname(): ?string
+    {
+        return $this->surname;
+    }
+
+    public function setSurname(string $surname): self
+    {
+        $this->surname = $surname;
+
+        return $this;
+    }
+
+    public function getFullName(): string
+    {
+        return sprintf("%s %s", $this->getName(), $this->getSurname());
     }
 }
