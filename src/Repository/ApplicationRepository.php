@@ -18,6 +18,8 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  */
 class ApplicationRepository extends ServiceEntityRepository
 {
+    const BY_API_KEY_HASH_AND_API_PATH_CACHE_KEY = "BY_API_KEY_HASH_AND_API_PATH_CACHE_KEY";
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Application::class);
@@ -39,7 +41,7 @@ class ApplicationRepository extends ServiceEntityRepository
             ->setParameter("hash", $apiKeyHash);
 
         $query = $qb->getQuery();
-        $query->useResultCache(true);
+        $query->useResultCache(true, null, static::BY_API_KEY_HASH_AND_API_PATH_CACHE_KEY);
 
         $results = $query->getResult();
 
