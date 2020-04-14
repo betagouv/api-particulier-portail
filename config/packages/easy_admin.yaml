@@ -2,20 +2,90 @@ easy_admin:
   site_name: '<img src="https://particulier.api.gouv.fr/img/logo-particulier-api.svg" width="400" />'
   user:
     name_property_path: "email"
+  design:
+    menu:
+      - entity: Api
+        icon: coins
+      - entity: Application
+        default: true
+        icon: plug
+      - entity: ApiKey
+        icon: key
+      - entity: Organization
+        permission: "ROLE_ADMIN"
+        icon: industry
+      - entity: Scope
+        permission: "ROLE_ADMIN"
+        icon: traffic-light
+      - entity: Subscription
+        permission: "ROLE_ADMIN"
+        icon: handshake
+      - entity: UserPosition
+        permission: "ROLE_ADMIN"
+        icon: user-cog
+      - entity: User
+        permission: "ROLE_ADMIN"
+        icon: user
   entities:
     Api:
       class: App\Entity\Api
+      label: API
+      list:
+        item_permission: "ROLE_ADMIN"
+      edit:
+        item_permission: "ROLE_ADMIN"
+      form:
+        fields:
+          - property: id
+            type_options:
+              disabled: true
+          - property: "created_at"
+            type: "datetime"
+            type_options:
+              disabled: true
+          - property: updated_at
+            type: "datetime"
+          - name
+          - backend
+          - path
     ApiKey:
       class: App\Entity\ApiKey
+      edit:
+        item_permission: "ROLE_ADMIN"
     Application:
       class: App\Entity\Application
+      list:
+        item_permission: "ROLE_ADMIN"
+      edit:
+        item_permission: "ROLE_ADMIN"
     Organization:
       class: App\Entity\Organization
+      list:
+        item_permission: "ROLE_ADMIN"
+      edit:
+        item_permission: "ROLE_ADMIN"
     Scope:
       class: App\Entity\Scope
+      list:
+        item_permission: "ROLE_ADMIN"
+      edit:
+        item_permission: "ROLE_ADMIN"
     Subscription:
       class: App\Entity\Subscription
+      list:
+        item_permission: "ROLE_ADMIN"
+      edit:
+        item_permission: "ROLE_ADMIN"
     UserPosition:
+      label: User Position
       class: App\Entity\UserPosition
+      list:
+        item_permission: "ROLE_ADMIN"
+      edit:
+        item_permission: "ROLE_ADMIN"
     User:
       class: App\Entity\User
+      list:
+        item_permission: "ROLE_ADMIN"
+      edit:
+        item_permission: "ROLE_ADMIN"
