@@ -84,6 +84,6 @@ class UserPosition
 
     public function __toString()
     {
-        return $this->role;
+        return sprintf("%s - %s", $this->getRole(), $this->user->getFullName());
     }
 }

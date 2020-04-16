@@ -16,9 +16,9 @@ class InfluxDBAnalyticsCollector implements AnalyticsCollectorInterface
      */
     private $database;
 
-    public function __construct(Client $client)
+    public function __construct(Client $client, string $database)
     {
-        $this->database = $client->selectDB("portal");
+        $this->database = $client->selectDB($database);
     }
 
     public function collectCall(
