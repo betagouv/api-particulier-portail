@@ -4,7 +4,7 @@ knpu_oauth2_client:
     auth-api:
       type: generic
       provider_class: App\AuthApi\AuthApiProvider
-      client_id: "%env(API_AUTH_CLIENT_ID)%"
-      client_secret: "%env(API_AUTH_CLIENT_SECRET)%"
+      client_id: "%env(string:AUTH_API_CLIENT_ID)%"
+      client_secret: "%env(string:AUTH_API_CLIENT_SECRET)%"
       redirect_route: connect_auth-api_check
       redirect_params: {}
