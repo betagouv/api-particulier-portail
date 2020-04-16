@@ -33,6 +33,5 @@ return new class extends DefaultDeployer
     public function beforeFinishingDeploy()
     {
         // $this->runRemote('{{ console_bin }} app:my-task-name');
-        $this->runLocal('say "The deployment has finished."');
     }
 };
