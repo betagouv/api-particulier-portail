@@ -1,0 +1,3 @@
+parameters:
+  deployment_user: "%env(DEPLOYMENT_USER)%"
+  deployment_host: "%env(DEPLOYMENT_HOST)%"
