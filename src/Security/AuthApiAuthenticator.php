@@ -92,7 +92,7 @@ class AuthApiAuthenticator extends SocialAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        $targetUrl = $this->router->generate('home');
+        $targetUrl = $this->router->generate('easyadmin');
 
         return new RedirectResponse($targetUrl);
     }

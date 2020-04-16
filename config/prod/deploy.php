@@ -17,6 +17,9 @@ return new class extends DefaultDeployer
             ->repositoryUrl('git@github.com:betagouv/api-particulier-portail.git')
             // the repository branch to deploy
             ->repositoryBranch('master')
+            ->sharedFilesAndDirs([
+                '.env'
+            ])
         ;
     }
 
