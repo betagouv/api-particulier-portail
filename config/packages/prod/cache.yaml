@@ -1,8 +1,8 @@
 framework:
   cache:
     pools:
-    cache.doctrine:
-      adapter: cache.adapter.apcu
+      cache.doctrine:
+        adapter: cache.adapter.apcu
     # Unique name of your app: used to compute stable namespaces for cache keys.
     #prefix_seed: your_vendor_name/app_name
     # The "app" cache stores to the filesystem by default.
