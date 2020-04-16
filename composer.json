@@ -5,6 +5,7 @@
         "php": "^7.2.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "alterphp/easyadmin-extension-bundle": "^3.0",
         "easycorp/easyadmin-bundle": "^2.3",
         "knpuniversity/oauth2-client-bundle": "^2.0",
         "nyholm/psr7": "^1.2",

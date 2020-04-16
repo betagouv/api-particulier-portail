@@ -1,21 +1,100 @@
+# Admin is working with an extension, see https://github.com/alterphp/EasyAdminExtensionBundle for additional documentation
 easy_admin:
   site_name: '<img src="https://particulier.api.gouv.fr/img/logo-particulier-api.svg" width="400" />'
   user:
     name_property_path: "email"
+  list:
+    actions: ["edit", "search", "delete", "new", "show"]
+  design:
+    menu:
+      - entity: Api
+        permission: "ROLE_ADMIN"
+        icon: coins
+      - entity: Application
+        default: true
+        icon: plug
+      - entity: ApiKey
+        icon: key
+      - entity: Organization
+        permission: "ROLE_ADMIN"
+        icon: industry
+      - entity: Scope
+        permission: "ROLE_ADMIN"
+        icon: traffic-light
+      - entity: Subscription
+        permission: "ROLE_ADMIN"
+        icon: handshake
+      - entity: UserPosition
+        permission: "ROLE_ADMIN"
+        icon: user-cog
+      - entity: User
+        permission: "ROLE_ADMIN"
+        icon: user
   entities:
     Api:
       class: App\Entity\Api
+      label: API
+      list:
+        item_permission: "ROLE_ADMIN"
+      edit:
+        item_permission: "ROLE_ADMIN"
+      form:
+        fields:
+          - property: id
+            type_options:
+              disabled: true
+          - property: "created_at"
+            type: "datetime"
+            type_options:
+              disabled: true
+          - property: updated_at
+            type: "datetime"
+          - name
+          - backend
+          - path
     ApiKey:
       class: App\Entity\ApiKey
+      form:
+        exclude_fields:
+          - createdAt
+          - updatedAt
+          - expiresAt
+          - active
+          - hash
     Application:
       class: App\Entity\Application
+      list:
+        fields:
+          - name
+      show:
+        fields:
+          - name
+          - scopes
+          - property: userPositions
+            type: association
+      new:
+        role: "ROLE_ADMIN"
+      edit:
+        role: "ROLE_ADMIN"
+      delete:
+        role: "ROLE_ADMIN"
+      form:
+        exclude_fields:
+          - createdAt
+          - updatedAt
     Organization:
       class: App\Entity\Organization
+      role: "ROLE_ADMIN"
     Scope:
       class: App\Entity\Scope
+      role: "ROLE_ADMIN"
     Subscription:
       class: App\Entity\Subscription
+      role: "ROLE_ADMIN"
     UserPosition:
+      label: User Position
       class: App\Entity\UserPosition
+      role: "ROLE_ADMIN"
     User:
       class: App\Entity\User
+      role: "ROLE_ADMIN"

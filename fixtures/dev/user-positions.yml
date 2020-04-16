@@ -1,0 +1,5 @@
+App\Entity\UserPosition:
+  jean_moust_the_dev:
+    role: "technical"
+    application: "@creche_paris"
+    user: "@jean_moust"

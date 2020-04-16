@@ -1,13 +1,13 @@
 trikoder_oauth2:
   authorization_server:
-    private_key: "%kernel.project_dir%/var/oauth/private.key"
-    private_key_passphrase: null # Passphrase of the private key, if any"
+    private_key: "%env(string:OAUTH2_PRIVATE_KEY_PATH)%"
+    private_key_passphrase: "%env(string:OAUTH2_PRIVATE_KEY_PASSPHRASE)%"
 
     encryption_key: "%env(string:OAUTH2_ENCRYPTION_KEY)%" # (Optional) Change this
 
     enable_auth_code_grant: true
   resource_server:
-    public_key: "%kernel.project_dir%/var/oauth/public.key"
+    public_key: "%env(string:OAUTH2_PUBLIC_KEY_PATH)%"
   scopes:
     - yolo
   persistence:
