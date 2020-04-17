@@ -56,7 +56,8 @@ class FixturesGenerateCommand extends Command
         $tokens = $this->decoder->decode($content, "json");
 
         $legacyOrganizationId = Uuid::uuid4()->toString();
-        $sinkholeApiId = Uuid::uuid4()->toString();
+        $impotsApiId = Uuid::uuid4()->toString();
+        $cafApiId = Uuid::uuid4()->toString();
         $fixtures = [
             Application::class => [],
             Organization::class => [
@@ -67,10 +68,15 @@ class FixturesGenerateCommand extends Command
             ApiKey::class => [],
             Subscription::class => [],
             Api::class => [
-                $sinkholeApiId => [
-                    "name" => "Sinkhole API",
+                $impotsApiId => [
+                    "name" => "Impôts - bouchonnée",
                     "backend" => "https://api-particulier-portail-bin.herokuapp.com/",
-                    "path" => "sinkhole"
+                    "path" => "impots"
+                ],
+                $cafApiId => [
+                    "name" => "CAF - bouchonnée",
+                    "backend" => "https://api-particulier-portail-bin.herokuapp.com/",
+                    "path" => "caf"
                 ]
             ]
         ];
@@ -91,13 +97,20 @@ class FixturesGenerateCommand extends Command
             $fixtures[Application::class][$applicationId] = $application;
 
             // Subscription
-            $subscriptionId = Uuid::uuid4()->toString();
-            $subscription = [
-                "api" => sprintf("@%s", $sinkholeApiId),
+            $subscriptionImpotsId = Uuid::uuid4()->toString();
+            $subscriptionImpots = [
+                "api" => sprintf("@%s", $impotsApiId),
                 "application" => sprintf("@%s", $applicationId),
                 "active" => true
             ];
-            $fixtures[Subscription::class][$subscriptionId] = $subscription;
+            $fixtures[Subscription::class][$subscriptionImpotsId] = $subscriptionImpots;
+            $subscriptionCafId = Uuid::uuid4()->toString();
+            $subscriptionCaf = [
+                "api" => sprintf("@%s", $cafApiId),
+                "application" => sprintf("@%s", $applicationId),
+                "active" => true
+            ];
+            $fixtures[Subscription::class][$cafApiId] = $subscriptionCaf;
 
             // ApiKey
             $apiKeyId = Uuid::uuid4()->toString();
