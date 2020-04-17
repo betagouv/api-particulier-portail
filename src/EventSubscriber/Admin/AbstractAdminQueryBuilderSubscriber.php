@@ -37,6 +37,10 @@ abstract class AbstractAdminQueryBuilderSubscriber implements EventSubscriberInt
             return;
         }
 
+        if ($this->security->isGranted("ROLE_ADMIN")) {
+            return;
+        }
+
         $event["query_builder"] = $this->getNewQueryBuilder($queryBuilder);
     }
 
