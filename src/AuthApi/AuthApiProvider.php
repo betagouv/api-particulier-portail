@@ -10,21 +10,33 @@ use Psr\Http\Message\ResponseInterface;
 class AuthApiProvider extends AbstractProvider
 {
     use BearerAuthorizationTrait;
+
+    /**
+     * @var string
+     */
+    private $baseUrl;
+
+    public function __construct(array $options = [], array $collaborators = [])
+    {
+        parent::__construct($options, $collaborators);
+        $this->baseUrl = $options["base_url"];
+    }
+
     const ACCESS_TOKEN_RESOURCE_OWNER_ID = "sub";
 
     public function getBaseAuthorizationUrl()
     {
-        return "https://auth-staging.api.gouv.fr/oauth/authorize";
+        return $this->baseUrl . "/oauth/authorize";
     }
 
     public function getBaseAccessTokenUrl(array $params)
     {
-        return "https://auth-staging.api.gouv.fr/oauth/token";
+        return $this->baseUrl . "/oauth/token";
     }
 
     public function getResourceOwnerDetailsUrl(AccessToken $accessToken)
     {
-        return "https://auth-staging.api.gouv.fr/oauth/userinfo";
+        return $this->baseUrl . "/oauth/userinfo";
     }
 
     protected function getDefaultScopes()
