@@ -30,6 +30,9 @@ easy_admin:
       - entity: User
         permission: "ROLE_ADMIN"
         icon: user
+      - label: Dashboard
+        icon: chart-pie
+        url: "%env(DASHBOARD_URL)%"
   entities:
     Api:
       class: App\Entity\Api
