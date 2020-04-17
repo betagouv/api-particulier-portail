@@ -34,7 +34,8 @@ class InfluxDBAnalyticsCollector implements AnalyticsCollectorInterface
             "application_id" => $application->getId(),
             "application_name" => $application->getName(),
             "organization_id" => $application->getOrganization()->getId(),
-            "organization_siret" => $application->getOrganization()->getSiret()
+            "organization_siret" => $application->getOrganization()->getSiret(),
+            "backend_response_status_code" => $backendResponseStatusCode
         ];
 
         $fields = [
