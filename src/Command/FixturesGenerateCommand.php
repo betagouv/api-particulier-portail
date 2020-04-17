@@ -68,7 +68,6 @@ class FixturesGenerateCommand extends Command
             Subscription::class => [],
             Api::class => [
                 $sinkholeApiId => [
-                    "id" => $sinkholeApiId,
                     "name" => "Sinkhole API",
                     "backend" => "https://api-particulier-portail-bin.herokuapp.com/",
                     "path" => "sinkhole"
@@ -85,9 +84,8 @@ class FixturesGenerateCommand extends Command
             // Application fixture
             $applicationId = Uuid::uuid4()->toString();
             $application = [
-                "id" => $applicationId,
                 "name" => $token["name"],
-                "signupId" => $token["signup_id"],
+                "signupId" => intval($token["signup_id"]),
                 "organization" => sprintf("@%s", $legacyOrganizationId)
             ];
             $fixtures[Application::class][$applicationId] = $application;
@@ -95,7 +93,6 @@ class FixturesGenerateCommand extends Command
             // Subscription
             $subscriptionId = Uuid::uuid4()->toString();
             $subscription = [
-                "id" => $subscriptionId,
                 "api" => sprintf("@%s", $sinkholeApiId),
                 "application" => sprintf("@%s", $applicationId),
                 "active" => true
@@ -105,10 +102,9 @@ class FixturesGenerateCommand extends Command
             // ApiKey
             $apiKeyId = Uuid::uuid4()->toString();
             $apiKey = [
-                "id" => $apiKeyId,
                 "active" => true,
                 "hash" => $token["hashed_token"],
-                "expires_at" => (new DateTime())->modify('+1 year'),
+                "expires_at" => "<identity((new DateTime())->modify('+1 year'))>",
                 "application" => sprintf("@%s", $applicationId)
             ];
             $fixtures[ApiKey::class][$apiKeyId] = $apiKey;
@@ -121,7 +117,7 @@ class FixturesGenerateCommand extends Command
             ],
             "yaml"
         );
-        file_put_contents("./fixtures/prod/legacy_api.yml", $apiFixtures);
+        file_put_contents("./fixtures/dev/legacy_api.yml", $apiFixtures);
 
         // ApiKey
         $apiKeyFixtures = $this->encoder->encode(
@@ -130,7 +126,7 @@ class FixturesGenerateCommand extends Command
             ],
             "yaml"
         );
-        file_put_contents("./fixtures/prod/legacy_api_key.yml", $apiKeyFixtures);
+        file_put_contents("./fixtures/dev/legacy_api_key.yml", $apiKeyFixtures);
 
         // Application
         $applicationFixtures = $this->encoder->encode(
@@ -139,7 +135,7 @@ class FixturesGenerateCommand extends Command
             ],
             "yaml"
         );
-        file_put_contents("./fixtures/prod/legacy_application.yml", $applicationFixtures);
+        file_put_contents("./fixtures/dev/legacy_application.yml", $applicationFixtures);
 
         // Subscription
         $subscriptionFixtures = $this->encoder->encode(
@@ -148,16 +144,16 @@ class FixturesGenerateCommand extends Command
             ],
             "yaml"
         );
-        file_put_contents("./fixtures/prod/legacy_subscription.yml", $subscriptionFixtures);
+        file_put_contents("./fixtures/dev/legacy_subscription.yml", $subscriptionFixtures);
 
         // Organization
         $organizationFixtures = $this->encoder->encode(
             [
-                Api::class => $fixtures[Api::class]
+                Organization::class => $fixtures[Organization::class]
             ],
             "yaml"
         );
-        file_put_contents("./fixtures/prod/legacy_organization.yml", $organizationFixtures);
+        file_put_contents("./fixtures/dev/legacy_organization.yml", $organizationFixtures);
 
         $io->success("Fixtures created");
 
