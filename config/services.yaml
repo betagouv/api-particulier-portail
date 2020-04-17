@@ -44,3 +44,8 @@ services:
   App\Collector\InfluxDBAnalyticsCollector:
     arguments:
       $database: "%env(string:INFLUXDB_DATABASE)%"
+
+  App\Repository\Analytics\UserRepository:
+    arguments:
+      $grafanaAdminUser: "%env(GRAFANA_ADMIN_USER)%"
+      $grafanaAdminPassword: "%env(GRAFANA_ADMIN_PASSWORD)%"

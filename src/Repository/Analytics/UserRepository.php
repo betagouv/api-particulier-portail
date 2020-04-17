@@ -12,10 +12,10 @@ class UserRepository
      */
     private $client;
 
-    public function __construct()
+    public function __construct(string $grafanaAdminUser, string $grafanaAdminPassword)
     {
         $this->client = HttpClient::createForBaseUri("http://localhost:3000/", [
-            "auth_basic" => ["admin", "juwaub5NOFF"]
+            "auth_basic" => [$grafanaAdminUser, $grafanaAdminPassword]
         ]);
     }
 
