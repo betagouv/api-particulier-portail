@@ -110,7 +110,7 @@ class FixturesGenerateCommand extends Command
                 "application" => sprintf("@%s", $applicationId),
                 "active" => true
             ];
-            $fixtures[Subscription::class][$cafApiId] = $subscriptionCaf;
+            $fixtures[Subscription::class][$subscriptionCafId] = $subscriptionCaf;
 
             // ApiKey
             $apiKeyId = Uuid::uuid4()->toString();
