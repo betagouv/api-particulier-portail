@@ -3,16 +3,19 @@
 namespace App\Controller;
 
 use App\Collector\AnalyticsCollectorInterface;
-use App\Entity\Api;
 use App\Entity\Application;
 use App\Repository\ApiRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpClient\Exception\ClientException;
+use Symfony\Component\HttpClient\Exception\RedirectionException;
+use Symfony\Component\HttpClient\Exception\ServerException;
+use Symfony\Component\HttpClient\Exception\TransportException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class ApiController extends AbstractController
+class ApiController
 {
     /**
      * @var HttpClientInterface
@@ -34,16 +37,23 @@ class ApiController extends AbstractController
      */
     private $apiRepository;
 
+    /**
+     * @var Security
+     */
+    private $security;
+
     public function __construct(
         HttpClientInterface $httpClient,
         array $proxiedHttpHeaders,
         AnalyticsCollectorInterface $analyticsCollector,
-        ApiRepository $apiRepository
+        ApiRepository $apiRepository,
+        Security $security
     ) {
         $this->httpClient = $httpClient;
         $this->proxiedHttpHeaders = $proxiedHttpHeaders;
         $this->analyticsCollector = $analyticsCollector;
         $this->apiRepository = $apiRepository;
+        $this->security = $security;
     }
 
     public function backend(
@@ -59,7 +69,17 @@ class ApiController extends AbstractController
             $request->getMethod(),
             sprintf("%s/%s", $backend, $uri),
         );
-        $content = $response->getContent();
+
+        $content = null;
+        $statusCode = null;
+        try {
+            $content = $response->getContent();
+            $statusCode = $response->getStatusCode();
+        } catch (TransportException $e) {
+            $statusCode = Response::HTTP_GATEWAY_TIMEOUT;
+        } catch (ClientException | ServerException | RedirectionException $e) {
+            $statusCode = $response->getStatusCode();
+        }
 
         $requestEvent = $stopWatch->stop("backend_request");
 
@@ -74,7 +94,7 @@ class ApiController extends AbstractController
         /**
          * @var Application $application
          */
-        $application = $this->getUser();
+        $application = $this->security->getUser();
 
         $api = $this->apiRepository->find($apiId);
 
@@ -82,10 +102,10 @@ class ApiController extends AbstractController
             $api,
             $application,
             $uri,
-            $response->getStatusCode(),
+            $statusCode,
             $requestEvent->getDuration()
         );
 
-        return new Response($content, $response->getStatusCode(), $headers);
+        return new Response($content, $statusCode, $headers);
     }
 }

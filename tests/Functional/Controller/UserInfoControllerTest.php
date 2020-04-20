@@ -58,7 +58,7 @@ class UserInfoControllerTest extends WebTestCase
         $accessToken = $accessTokenRepository->getNewToken($client, [], $user->getEmail());
         $accessToken->setIdentifier("la barbe de la femme à Georges Moustaki");
         $accessToken->setExpiryDateTime((new DateTimeImmutable())->modify("+1 hour"));
-        $accessToken->setPrivateKey(new CryptKey(__DIR__ . "/../../../var/oauth/private.key"));
+        $accessToken->setPrivateKey(new CryptKey(__DIR__ . "/../../../var/private.key"));
         $accessTokenRepository->persistNewAccessToken($accessToken);
 
         return $accessToken;
