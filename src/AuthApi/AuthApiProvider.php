@@ -51,14 +51,14 @@ class AuthApiProvider extends AbstractProvider
     protected function createResourceOwner(array $response, AccessToken $token)
     {
         $organizations = array_map(function (array $organization) {
-            return $organization["siret"];
-        }, $response["organizations"]);
+            return $organization["siret"] ?? "";
+        }, $response["organizations"] ?? []);
         return new ResourceOwner(
-            $response["sub"],
-            $response["given_name"],
-            $response["family_name"],
-            $response["email"],
-            $response["roles"],
+            $response["sub"] ?? "",
+            $response["given_name"] ?? "",
+            $response["family_name"] ?? "",
+            $response["email"] ?? "",
+            $response["roles"] ?? "",
             $organizations
         );
     }
