@@ -8,7 +8,6 @@
     "alterphp/easyadmin-extension-bundle": "^3.0",
     "easycorp/easyadmin-bundle": "^2.3",
     "hautelook/alice-bundle": "^2.7",
-    "influxdb/influxdb-php": "^1.15",
     "knpuniversity/oauth2-client-bundle": "^2.0",
     "nyholm/psr7": "^1.2",
     "predis/predis": "^1.1",

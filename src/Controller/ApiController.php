@@ -2,16 +2,12 @@
 
 namespace App\Controller;
 
-use App\Collector\AnalyticsCollectorInterface;
-use App\Entity\Application;
-use App\Repository\ApiRepository;
 use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpClient\Exception\RedirectionException;
 use Symfony\Component\HttpClient\Exception\ServerException;
 use Symfony\Component\HttpClient\Exception\TransportException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -27,40 +23,18 @@ class ApiController
      */
     private $proxiedHttpHeaders;
 
-    /**
-     * @var AnalyticsCollectorInterface
-     */
-    private $analyticsCollector;
-
-    /**
-     * @var ApiRepository
-     */
-    private $apiRepository;
-
-    /**
-     * @var Security
-     */
-    private $security;
-
     public function __construct(
         HttpClientInterface $httpClient,
-        array $proxiedHttpHeaders,
-        AnalyticsCollectorInterface $analyticsCollector,
-        ApiRepository $apiRepository,
-        Security $security
+        array $proxiedHttpHeaders
     ) {
         $this->httpClient = $httpClient;
         $this->proxiedHttpHeaders = $proxiedHttpHeaders;
-        $this->analyticsCollector = $analyticsCollector;
-        $this->apiRepository = $apiRepository;
-        $this->security = $security;
     }
 
     public function backend(
         string $uri,
         string $backend,
-        Request $request,
-        string $apiId
+        Request $request
     ) {
         $stopWatch = new Stopwatch();
         $stopWatch->start("backend_request");
@@ -72,9 +46,16 @@ class ApiController
 
         $content = null;
         $statusCode = null;
+        $headers = [];
         try {
             $content = $response->getContent();
             $statusCode = $response->getStatusCode();
+            foreach ($this->proxiedHttpHeaders as $proxiedHttpHeader) {
+                $lowerCaseProxiedHeader = strtolower($proxiedHttpHeader);
+                if (isset($response->getHeaders()[$lowerCaseProxiedHeader])) {
+                    $headers[$lowerCaseProxiedHeader] = $response->getHeaders()[$lowerCaseProxiedHeader];
+                }
+            }
         } catch (TransportException $e) {
             $statusCode = Response::HTTP_GATEWAY_TIMEOUT;
         } catch (ClientException | ServerException | RedirectionException $e) {
@@ -83,28 +64,8 @@ class ApiController
 
         $requestEvent = $stopWatch->stop("backend_request");
 
-        $headers = [];
-        foreach ($this->proxiedHttpHeaders as $proxiedHttpHeader) {
-            $lowerCaseProxiedHeader = strtolower($proxiedHttpHeader);
-            if (isset($response->getHeaders()[$lowerCaseProxiedHeader])) {
-                $headers[$lowerCaseProxiedHeader] = $response->getHeaders()[$lowerCaseProxiedHeader];
-            }
-        }
-
-        /**
-         * @var Application $application
-         */
-        $application = $this->security->getUser();
-
-        $api = $this->apiRepository->find($apiId);
-
-        $this->analyticsCollector->collectCall(
-            $api,
-            $application,
-            $uri,
-            $statusCode,
-            $requestEvent->getDuration()
-        );
+        $request->attributes->set("status_code", $statusCode);
+        $request->attributes->set("response_time", $requestEvent->getDuration());
 
         return new Response($content, $statusCode, $headers);
     }

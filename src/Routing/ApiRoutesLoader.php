@@ -33,7 +33,9 @@ class ApiRoutesLoader extends Loader
             $defaults = [
                 "_controller" => "App\Controller\ApiController::backend",
                 "backend" => $api->getBackend(),
-                "apiId" => $api->getId()->toString()
+                "apiId" => $api->getId()->toString(),
+                // Mark request as gateway to trigger analytics collection
+                "collect_analytics" => true
             ];
             $requirements = [
                 "uri" => ".+"

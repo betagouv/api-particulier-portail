@@ -34,17 +34,6 @@ services:
       $proxiedHttpHeaders: "%proxied_http_headers%"
     tags: ["controller.service_arguments"]
 
-  InfluxDB\Client:
-    arguments:
-      - "%env(string:INFLUXDB_HOST)%"
-      - "%env(int:INFLUXDB_PORT)%"
-      - "%env(string:INFLUXDB_USER)%"
-      - "%env(string:INFLUXDB_PASSWORD)%"
-
-  App\Collector\InfluxDBAnalyticsCollector:
-    arguments:
-      $database: "%env(string:INFLUXDB_DATABASE)%"
-
   App\Repository\Analytics\UserRepository:
     arguments:
       $grafanaAdminUser: "%env(GRAFANA_ADMIN_USER)%"

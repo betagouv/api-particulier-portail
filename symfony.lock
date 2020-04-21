@@ -135,9 +135,6 @@
             "fixtures/.gitignore"
         ]
     },
-    "influxdb/influxdb-php": {
-        "version": "1.15.0"
-    },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
