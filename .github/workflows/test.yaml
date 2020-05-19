@@ -1,0 +1,36 @@
+name: Tests
+
+on:
+  - push
+
+env:
+  APP_ENV: test
+  DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/portail?serverVersion=11&charset=utf8
+  DASHBOARD_URL: http://localhost:3000
+
+jobs:
+  api:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: timescale/timescaledb:latest-pg11
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: portail
+        ports:
+          - 5432:5432
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "7.4"
+          tools: composer
+      - name: Create empty .env file
+        run: touch .env
+      - name: Install dependencies
+        run: composer install
+      - name: Run the tests
+        run: ./bin/phpunit
