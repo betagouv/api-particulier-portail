@@ -38,3 +38,7 @@ services:
     arguments:
       $grafanaAdminUser: "%env(GRAFANA_ADMIN_USER)%"
       $grafanaAdminPassword: "%env(GRAFANA_ADMIN_PASSWORD)%"
+
+  App\EventSubscriber\AnalyticsSubscriber:
+    arguments:
+      $enabled: "%collect_request_analytics%"

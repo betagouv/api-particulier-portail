@@ -31,11 +31,17 @@ class AnalyticsSubscriber implements EventSubscriberInterface
      */
     private $entityManager;
 
-    public function __construct(ApiRepository $apiRepository, Security $security, EntityManagerInterface $entityManager)
+    /**
+     * @var bool
+     */
+    private $enabled;
+
+    public function __construct(ApiRepository $apiRepository, Security $security, EntityManagerInterface $entityManager, bool $enabled)
     {
         $this->apiRepository = $apiRepository;
         $this->security = $security;
         $this->entityManager = $entityManager;
+        $this->enabled = $enabled;
     }
 
     public static function getSubscribedEvents()
@@ -47,6 +53,9 @@ class AnalyticsSubscriber implements EventSubscriberInterface
 
     public function onKernelTerminate(KernelEvent $event)
     {
+        if (!$this->enabled) {
+            return;
+        }
         $request = $event->getRequest();
 
         if (!$request->get("collect_analytics")) {
