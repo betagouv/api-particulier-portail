@@ -38,7 +38,7 @@ class ApiKeyAuthenticatorTest extends WebTestCase
         $this->assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 
-    public function testInvalidApiKey()
+    public function testInactiveApiKey()
     {
         $apiKey = self::$container->getParameter("inactive_api_key");
 

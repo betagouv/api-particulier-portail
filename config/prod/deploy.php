@@ -6,8 +6,8 @@ return new class extends DefaultDeployer
 {
     public function configure()
     {
-        $deploymentUser=  $_ENV["DEPLOYMENT_USER"];
-        $deploymentHost=  $_ENV["DEPLOYMENT_HOST"];
+        $deploymentUser =  $_ENV["DEPLOYMENT_USER"];
+        $deploymentHost =  $_ENV["DEPLOYMENT_HOST"];
         return $this->getConfigBuilder()
             // SSH connection string to connect to the remote server (format: user@host-or-IP:port-number)
             ->server(sprintf('%s@%s', $deploymentUser, $deploymentHost))
@@ -19,8 +19,7 @@ return new class extends DefaultDeployer
             ->repositoryBranch('master')
             ->sharedFilesAndDirs([
                 '.env'
-            ])
-        ;
+            ]);
     }
 
     // run some local or remote commands before the deployment is started

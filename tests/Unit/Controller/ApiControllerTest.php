@@ -2,7 +2,6 @@
 
 namespace App\Tests\Unit\Controller;
 
-use App\Collector\AnalyticsCollectorInterface;
 use App\Controller\ApiController;
 use App\Entity\Api;
 use App\Entity\Application;
@@ -13,6 +12,7 @@ use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBag;
 use Symfony\Component\Security\Core\Security;
 
 class ApiControllerTest extends TestCase
@@ -21,11 +21,6 @@ class ApiControllerTest extends TestCase
      * @var ApiController
      */
     private $controller;
-
-    /**
-     * @var AnalyticsCollectorInterface|MockObject
-     */
-    private $analyticsCollector;
 
     /**
      * @var ApiRepository|MockObject
@@ -49,7 +44,6 @@ class ApiControllerTest extends TestCase
 
     public function setUp()
     {
-        $this->analyticsCollector = $this->createMock(AnalyticsCollectorInterface::class);
         $this->apiRepository = $this->createMock(ApiRepository::class);
         $this->application = $this->createMock(Application::class);
         $this->security = $this->createMock(Security::class);
@@ -68,9 +62,6 @@ class ApiControllerTest extends TestCase
         $this->controller = new ApiController(
             $httpClient,
             [],
-            $this->analyticsCollector,
-            $this->apiRepository,
-            $this->security
         );
     }
 
@@ -82,16 +73,8 @@ class ApiControllerTest extends TestCase
                 yield '';
             })()),
         ]);
-        $this->analyticsCollector
-            ->expects($this->once())
-            ->method("collectCall")
-            ->with(
-                $this->api,
-                $this->application,
-                "yolo",
-                Response::HTTP_GATEWAY_TIMEOUT
-            );
-        $this->makeRequest();
+        $apiResponse = $this->makeRequest();
+        $this->assertEquals(Response::HTTP_GATEWAY_TIMEOUT, $apiResponse->getStatusCode());
     }
 
     public function statusCodes()
@@ -111,15 +94,6 @@ class ApiControllerTest extends TestCase
                 "http_code" => $statusCode
             ]),
         ]);
-        $this->analyticsCollector
-            ->expects($this->once())
-            ->method("collectCall")
-            ->with(
-                $this->api,
-                $this->application,
-                "yolo",
-                $statusCode
-            );
 
         /**
          * @var Response $apiResponse
@@ -136,6 +110,7 @@ class ApiControllerTest extends TestCase
         $request = $this->createMock(Request::class);
         $request->method("getMethod")
             ->willReturn("GET");
+        $request->attributes = new AttributeBag();
         return $this->controller->backend(
             "yolo",
             "http://croute",
