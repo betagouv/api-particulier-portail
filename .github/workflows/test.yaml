@@ -32,13 +32,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Create docker network
+        run: docker network create -d bridge portail-network
+      - name: Run php-fpm
+        run: docker run --name php-fpm --network portail-network -v /home/runner/work/api-particulier-portail/api-particulier-portail:/app -d bitnami/php-fpm
+      - name: Run nginx
+        run: docker run --name nginx --network portail-network -v /home/runner/work/api-particulier-portail/api-particulier-portail/tests/nginx-server.conf:/etc/nginx/conf.d/api-particulier-portail.conf:ro -p 80:80 -d nginx
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: "7.4"
           tools: composer
-      - name: Create empty .env file
-        run: touch .env
+      - name: Create an .env file
+        run: env > .env
       - name: Install dependencies
         run: composer install
       - name: Create openssl private key
@@ -50,3 +56,8 @@ jobs:
       - name: Cat the logs when tests fail
         if: ${{ failure() }}
         run: cat var/log/test.log
+      - name: Ping the local server
+        run: curl localhost
+      - name: Cat the web logs
+        if: ${{ always() }}
+        run: docker logs nginx
