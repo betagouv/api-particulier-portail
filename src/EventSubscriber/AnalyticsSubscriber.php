@@ -52,6 +52,9 @@ class AnalyticsSubscriber implements EventSubscriberInterface
         if (!$request->get("collect_analytics")) {
             return;
         }
+        if (is_null($this->security->getUser())) {
+            return;
+        }
 
         /**
          * @var sttring $apiId
