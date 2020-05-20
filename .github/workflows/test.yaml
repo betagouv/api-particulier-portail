@@ -9,6 +9,9 @@ env:
   DASHBOARD_URL: http://localhost:3000
   DEPLOYMENT_USER: ubuntu
   DEPLOYMENT_HOST: localhost
+  OAUTH2_ENCRYPTION_KEY: UBAlx0v3aJyGyQQOQF3XQ+ZeFFxlcKvWjWeKsHHyZN0=
+  OAUTH2_PRIVATE_KEY_PATH: /home/runner/work/api-particulier-portail/api-particulier-portail/var/private.key
+  OAUTH2_PUBLIC_KEY_PATH: /home/runner/work/api-particulier-portail/api-particulier-portail/var/public.key
 
 jobs:
   api:
@@ -22,6 +25,10 @@ jobs:
           POSTGRES_DB: portail
         ports:
           - 5432:5432
+      redis:
+        image: redis:6
+        ports:
+          - 6379:6379
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -34,5 +41,12 @@ jobs:
         run: touch .env
       - name: Install dependencies
         run: composer install
+      - name: Create openssl private key
+        run: openssl genrsa -out var/private.key 2048
+      - name: Create openssl public key
+        run: openssl rsa -in var/private.key -pubout -out var/public.key
       - name: Run the tests
         run: ./bin/phpunit
+      - name: Cat the logs when tests fail
+        if: ${{ failure() }}
+        run: cat var/log/test.log
