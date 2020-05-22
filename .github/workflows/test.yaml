@@ -3,19 +3,18 @@ name: Tests
 on:
   - push
 
-env:
-  APP_ENV: test
-  DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/portail?serverVersion=11&charset=utf8
-  DASHBOARD_URL: http://localhost:3000
-  DEPLOYMENT_USER: ubuntu
-  DEPLOYMENT_HOST: localhost
-  OAUTH2_ENCRYPTION_KEY: UBAlx0v3aJyGyQQOQF3XQ+ZeFFxlcKvWjWeKsHHyZN0=
-  OAUTH2_PRIVATE_KEY_PATH: /home/runner/work/api-particulier-portail/api-particulier-portail/var/private.key
-  OAUTH2_PUBLIC_KEY_PATH: /home/runner/work/api-particulier-portail/api-particulier-portail/var/public.key
-
 jobs:
-  api:
+  tests:
     runs-on: ubuntu-latest
+    env:
+      APP_ENV: test
+      DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/portail?serverVersion=11&charset=utf8
+      DASHBOARD_URL: http://localhost:3000
+      DEPLOYMENT_USER: ubuntu
+      DEPLOYMENT_HOST: localhost
+      OAUTH2_ENCRYPTION_KEY: UBAlx0v3aJyGyQQOQF3XQ+ZeFFxlcKvWjWeKsHHyZN0=
+      OAUTH2_PRIVATE_KEY_PATH: /home/runner/work/api-particulier-portail/api-particulier-portail/var/private.key
+      OAUTH2_PUBLIC_KEY_PATH: /home/runner/work/api-particulier-portail/api-particulier-portail/var/public.key
     services:
       postgres:
         image: timescale/timescaledb:latest-pg11
@@ -32,19 +31,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Create docker network
-        run: docker network create -d bridge portail-network
-      - name: Run php-fpm
-        run: docker run --name php-fpm --network portail-network -v /home/runner/work/api-particulier-portail/api-particulier-portail:/app -d bitnami/php-fpm
-      - name: Run nginx
-        run: docker run --name nginx --network portail-network -v /home/runner/work/api-particulier-portail/api-particulier-portail/tests/nginx-server.conf:/etc/nginx/conf.d/api-particulier-portail.conf:ro -p 80:80 -d nginx
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: "7.4"
           tools: composer
       - name: Create an .env file
-        run: env > .env
+        run: touch .env
       - name: Install dependencies
         run: composer install
       - name: Create openssl private key
@@ -56,8 +49,31 @@ jobs:
       - name: Cat the logs when tests fail
         if: ${{ failure() }}
         run: cat var/log/test.log
+  load-testing:
+    runs-on: ubuntu-latest
+    env:
+      COMPOSE_FILE: tests/docker-compose.yml
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Create var directory
+        run: mkdir var
+      - name: Create openssl private key
+        run: openssl genrsa -out var/private.key 2048
+      - name: Create openssl public key
+        run: openssl rsa -in var/private.key -pubout -out var/public.key
+      - name: Create an .env file
+        run: touch .env
+      - name: Run application
+        run: docker-compose up -d
+      - name: Install dependencies
+        run: docker-compose exec -T php sh -c "cd /code && composer install"
+      - name: Load the fixtures
+        run: docker-compose exec -T php sh -c "cd /code && ./bin/console hautelook:fixtures:load --env=dev --quiet"
+      - name: Clear the cache
+        run: docker-compose exec -T php sh -c "cd /code && ./bin/console cache:clear"
       - name: Ping the local server
-        run: curl localhost
+        run: curl http://localhost/api/geo/communes/97361 -H "X-Api-Key:yolo"
       - name: Cat the web logs
         if: ${{ always() }}
-        run: docker logs nginx
+        run: docker-compose logs web
