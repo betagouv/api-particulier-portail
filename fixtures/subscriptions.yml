@@ -11,3 +11,7 @@ App\Entity\Subscription:
     api: "@poke_api"
     application: "@creche_paris"
     active: false
+  creche_paris_sinkhole_subscription:
+    api: "@sinkhole_api"
+    application: "@creche_paris"
+    active: false

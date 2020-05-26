@@ -3,6 +3,7 @@
 namespace App\Security;
 
 use App\Repository\ApplicationRepository;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,12 +25,18 @@ class ApiKeyAuthenticator extends AbstractGuardAuthenticator
      */
     private $apiKeyEncoder;
 
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
     const HEADER_NAME = "X-Api-Key";
 
-    public function __construct(ApplicationRepository $applicationRepository, ApiKeyEncoder $apiKeyEncoder)
+    public function __construct(ApplicationRepository $applicationRepository, ApiKeyEncoder $apiKeyEncoder, LoggerInterface $logger)
     {
         $this->applicationRepository = $applicationRepository;
         $this->apiKeyEncoder = $apiKeyEncoder;
+        $this->logger = $logger;
     }
 
     public function supports(Request $request)
@@ -52,8 +59,6 @@ class ApiKeyAuthenticator extends AbstractGuardAuthenticator
         if (count($components) < 4) {
             return null;
         }
-
-        $this->apiKeyEncoder->encodeString("yolo");
 
         return [
             "path" => $components[2],
@@ -95,9 +100,13 @@ class ApiKeyAuthenticator extends AbstractGuardAuthenticator
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
+        $this->logger->debug('Authentication failed', [
+            'message' => $exception->getMessageKey(),
+            'message_data' => $exception->getMessageData()
+        ]);
         $data = [
             // you may want to customize or obfuscate the message first
-            'message' => strtr($exception->getMessageKey(), $exception->getMessageData())
+            'message' => 'Authentication failed'
 
             // or to translate this message
             // $this->translator->trans($exception->getMessageKey(), $exception->getMessageData())

@@ -14,3 +14,7 @@ App\Entity\Api:
     name: "Pokedex API"
     backend: "https://pokeapi.co/api/v2"
     path: "poke"
+  sinkhole_api:
+    name: "Sinkhole API"
+    backend: "https://api-particulier-portail-bin.herokuapp.com"
+    path: sinkhole

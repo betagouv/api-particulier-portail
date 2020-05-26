@@ -94,6 +94,10 @@ easy_admin:
     Subscription:
       class: App\Entity\Subscription
       role: "ROLE_ADMIN"
+      form:
+        exclude_fields:
+          - createdAt
+          - updatedAt
     UserPosition:
       label: User Position
       class: App\Entity\UserPosition
