@@ -70,11 +70,11 @@ jobs:
       - name: Install dependencies
         run: docker-compose exec -T php sh -c "cd /code && composer install"
       - name: Load the fixtures
-        run: docker-compose exec -T php sh -c "cd /code && ./bin/console hautelook:fixtures:load --env=dev --quiet"
+        run: docker-compose exec -T php sh -c "cd /code && ./bin/console hautelook:fixtures:load --env=ci --quiet"
       - name: Clear the cache
         run: docker-compose exec -T php sh -c "cd /code && ./bin/console cache:clear"
       - name: Ping the local server
-        run: curl http://localhost/api/geo/communes/97361 -H "X-Api-Key:yolo"
+        run: curl http://localhost/api/sinkhole/yolo -H "X-Api-Key:yolo"
       - name: Cat the web logs
         if: ${{ always() }}
         run: docker-compose logs web
