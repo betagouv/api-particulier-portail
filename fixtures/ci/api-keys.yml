@@ -1,6 +1,0 @@
-App\Entity\ApiKey:
-  creche_paris_key_1:
-    active: true
-    expiresAt: "<identity((new DateTime())->modify('+1 year'))>"
-    hash: "<{active_api_key_hash}>"
-    application: "@creche_paris"
