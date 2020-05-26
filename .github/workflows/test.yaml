@@ -70,7 +70,7 @@ jobs:
       - name: Install dependencies
         run: docker-compose exec -T php sh -c "cd /code && composer install"
       - name: Load the fixtures
-        run: docker-compose exec -T php sh -c "cd /code && ./bin/console hautelook:fixtures:load --env=ci --quiet"
+        run: docker-compose exec -T php sh -c "cd /code && ./bin/console hautelook:fixtures:load --env=dev --quiet"
       - name: Clear the cache
         run: docker-compose exec -T php sh -c "cd /code && ./bin/console cache:clear"
       - name: Ping the local server

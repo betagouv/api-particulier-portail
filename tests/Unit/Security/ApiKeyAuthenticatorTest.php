@@ -7,6 +7,7 @@ use App\Security\ApiKeyAuthenticator;
 use App\Security\ApiKeyEncoder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class ApiKeyAuthenticatorTest extends TestCase
@@ -26,19 +27,30 @@ class ApiKeyAuthenticatorTest extends TestCase
      */
     private $apiKeyAuthenticator;
 
+    /**
+     * @var LoggerInterface|MockObject
+     */
+    private $logger;
+
     public function setUp()
     {
         /**
          * @var ApplicationRepository $applicationRepository
          */
         $this->applicationRepository = $this->createMock(ApplicationRepository::class);
+
+        /**
+         * @var LoggerInterface $logger
+         */
+        $this->logger = $this->createMock(LoggerInterface::class);
         /**
          * @var ApiKeyEncoder $apiKeyEncoder
          */
         $this->apiKeyEncoder = $this->createMock(ApiKeyEncoder::class);
         $this->apiKeyAuthenticator = new ApiKeyAuthenticator(
             $this->applicationRepository,
-            $this->apiKeyEncoder
+            $this->apiKeyEncoder,
+            $this->logger
         );
     }
 
