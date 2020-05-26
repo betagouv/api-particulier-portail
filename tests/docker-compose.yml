@@ -27,6 +27,7 @@ services:
       OAUTH2_ENCRYPTION_KEY: UBAlx0v3aJyGyQQOQF3XQ+ZeFFxlcKvWjWeKsHHyZN0=
       OAUTH2_PRIVATE_KEY_PATH: /code/var/private.key
       OAUTH2_PUBLIC_KEY_PATH: /code/var/public.key
+      REDIS_URL: redis://redis
   db:
     image: timescale/timescaledb:latest-pg11
     environment:
