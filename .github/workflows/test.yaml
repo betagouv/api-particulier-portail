@@ -15,6 +15,7 @@ jobs:
       OAUTH2_ENCRYPTION_KEY: UBAlx0v3aJyGyQQOQF3XQ+ZeFFxlcKvWjWeKsHHyZN0=
       OAUTH2_PRIVATE_KEY_PATH: /home/runner/work/api-particulier-portail/api-particulier-portail/var/private.key
       OAUTH2_PUBLIC_KEY_PATH: /home/runner/work/api-particulier-portail/api-particulier-portail/var/public.key
+      REDIS_URL: redis://localhost
     services:
       postgres:
         image: timescale/timescaledb:latest-pg11
