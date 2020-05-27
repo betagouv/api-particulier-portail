@@ -16,5 +16,5 @@ App\Entity\Api:
     path: "poke"
   sinkhole_api:
     name: "Sinkhole API"
-    backend: "https://api-particulier-portail-bin.herokuapp.com"
+    backend: "http://web/sinkhole"
     path: sinkhole

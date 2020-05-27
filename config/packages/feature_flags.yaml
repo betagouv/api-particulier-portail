@@ -1,2 +1,2 @@
 parameters:
-  collect_request_analytics: true
+  collect_request_analytics: "%env(bool:COLLECT_REQUEST_ANALYTICS)"
