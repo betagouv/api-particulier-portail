@@ -77,25 +77,16 @@ jobs:
         run: curl http://localhost/sinkhole/croute
       - name: Warm up the seat
         run: curl http://localhost/api/sinkhole/yolo -H "X-Api-Key:yolo"
-      # - name: Install JDK
-      #   run: sudo apt-get install default-jre
-      # - name: Download Gatling
-      #   run: wget https://repo1.maven.org/maven2/io/gatling/highcharts/gatling-charts-highcharts-bundle/3.3.1/gatling-charts-highcharts-bundle-3.3.1-bundle.zip
-      # - name: Unzip Gatling
-      #   run: unzip gatling-charts-highcharts-bundle-3.3.1-bundle.zip -d gatling
-      # - name: Run Gatling
-      #   run: sh gatling/gatling-charts-highcharts-bundle-3.3.1/bin/gatling.sh -s "apiparticulier.HeavyLoadSimulation" -rd "CI Run" -sf tests/gatling/simulations
-      # - name: Upload Gatling report
-      #   uses: actions/upload-artifact@v1
-      #   with:
-      #     name: load-testing-report
-      #     path: gatling/gatling-charts-highcharts-bundle-3.3.1/results
-      - name: Cat the web logs
-        if: ${{ always() }}
-        run: docker-compose logs
-      - name: List the app logs
-        if: ${{ always() }}
-        run: ls var/log
-      - name: Cat the app logs
-        if: ${{ always() }}
-        run: cat var/log/dev.log
+      - name: Install JDK
+        run: sudo apt-get install default-jre
+      - name: Download Gatling
+        run: wget https://repo1.maven.org/maven2/io/gatling/highcharts/gatling-charts-highcharts-bundle/3.3.1/gatling-charts-highcharts-bundle-3.3.1-bundle.zip
+      - name: Unzip Gatling
+        run: unzip gatling-charts-highcharts-bundle-3.3.1-bundle.zip -d gatling
+      - name: Run Gatling
+        run: sh gatling/gatling-charts-highcharts-bundle-3.3.1/bin/gatling.sh -s "apiparticulier.HeavyLoadSimulation" -rd "CI Run" -sf tests/gatling/simulations
+      - name: Upload Gatling report
+        uses: actions/upload-artifact@v1
+        with:
+          name: load-testing-report
+          path: gatling/gatling-charts-highcharts-bundle-3.3.1/results
