@@ -20,5 +20,5 @@ class HeavyLoadSimulation extends Simulation {
 			.get("/api/sinkhole/yolo")
 			.headers(headers_0))
 
-	setUp(scn.inject(constantUsersPerSec(10) during(10) randomized)).protocols(httpProtocol)
+	setUp(scn.inject(constantUsersPerSec(100) during(10) randomized)).protocols(httpProtocol)
 }
