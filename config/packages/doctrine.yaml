@@ -1,6 +1,7 @@
 doctrine:
   dbal:
     url: "%env(resolve:DATABASE_URL)%"
+    schema_filter: ~^(?!_timescaledb)~
     types:
       iddatetime: App\DoctrineType\IdDateTimeType
     # IMPORTANT: You MUST configure your server version,
