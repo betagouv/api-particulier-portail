@@ -22,7 +22,7 @@ class IdDateTimeType extends DateTimeTzImmutableType
             return $value;
         }
 
-        $dateTime = DateTimeImmutable::createFromFormat('Y-m-d H:i:s.u', $value);
+        $dateTime = DateTimeImmutable::createFromFormat('Y-m-d H:i:s.uP', $value);
 
         if (!$dateTime) {
             throw ConversionException::conversionFailedFormat(
@@ -42,7 +42,7 @@ class IdDateTimeType extends DateTimeTzImmutableType
         }
 
         if ($value instanceof DateTimeImmutable) {
-            return $value->format('Y-m-d H:i:s.u');
+            return $value->format('Y-m-d H:i:s.uP');
         }
 
         throw ConversionException::conversionFailedInvalidType(
