@@ -7,7 +7,7 @@ return new class extends DefaultDeployer
     public function configure()
     {
         $deploymentUser =  $_ENV["DEPLOYMENT_USER"];
-        $deploymentHost =  $_ENV["DEPLOYMENT_HOST_PRODUCTION"];
+        $deploymentHost =  $_ENV["DEPLOYMENT_HOST_STAGING"];
         return $this->getConfigBuilder()
             // SSH connection string to connect to the remote server (format: user@host-or-IP:port-number)
             ->server(sprintf('%s@%s', $deploymentUser, $deploymentHost))
@@ -32,5 +32,13 @@ return new class extends DefaultDeployer
     public function beforeFinishingDeploy()
     {
         // $this->runRemote('{{ console_bin }} app:my-task-name');
+    }
+
+    public function beforeCancelingDeploy()
+    {
+        die;
+        // An error happened during the deployment and remote servers are
+        // going to be reverted to their original state. Here you can perform
+        // clean ups or send notifications about the error.
     }
 };
