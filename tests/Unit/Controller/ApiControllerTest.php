@@ -10,6 +10,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBag;
@@ -110,6 +111,7 @@ class ApiControllerTest extends TestCase
         $request = $this->createMock(Request::class);
         $request->method("getMethod")
             ->willReturn("GET");
+        $request->query = new ParameterBag();
         $request->attributes = new AttributeBag();
         return $this->controller->backend(
             "yolo",
