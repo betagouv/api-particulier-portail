@@ -13,7 +13,7 @@ services:
   php:
     image: chialab/php:7.4-fpm
     volumes:
-      - ../:/code
+      - ../../:/code
   db:
     image: timescale/timescaledb:latest-pg11
     environment:
