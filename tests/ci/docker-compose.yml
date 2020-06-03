@@ -6,7 +6,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ../:/code
+      - ../../:/code
       - ./conf.d:/etc/nginx/conf.d
     links:
       - php
