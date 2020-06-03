@@ -42,6 +42,9 @@ class ApiController
         $response = $this->httpClient->request(
             $request->getMethod(),
             sprintf("%s/%s", $backend, $uri),
+            [
+                "query" => $request->query->all()
+            ]
         );
 
         $content = null;
