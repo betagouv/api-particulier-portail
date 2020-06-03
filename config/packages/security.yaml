@@ -30,6 +30,9 @@ security:
     user:
       anonymous: lazy
       provider: app_user_provider
+      logout:
+        path: connect_auth-api_logout
+        target: post_logout
       guard:
         authenticators:
           - App\Security\AuthApiAuthenticator

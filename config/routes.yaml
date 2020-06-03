@@ -1,3 +1,7 @@
 app_extra:
   resource: .
   type: extra
+
+post_logout:
+  path: /oauth/logout
+  host: auth-staging.api.gouv.fr
