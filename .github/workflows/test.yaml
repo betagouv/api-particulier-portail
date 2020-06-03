@@ -50,10 +50,10 @@ jobs:
       - name: Cat the logs when tests fail
         if: ${{ failure() }}
         run: cat var/log/test.log
-  load-testing:
+  end-to-end-tests:
     runs-on: ubuntu-latest
     env:
-      COMPOSE_FILE: tests/docker-compose.yml
+      COMPOSE_FILE: tests/ci/docker-compose.yml
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -64,7 +64,7 @@ jobs:
       - name: Create openssl public key
         run: openssl rsa -in var/private.key -pubout -out var/public.key
       - name: Create the .env file
-        run: cp tests/.env.ci .env
+        run: cp tests/ci/.env.ci .env
       - name: Run application
         run: docker-compose up -d
       - name: Install dependencies
@@ -73,20 +73,5 @@ jobs:
         run: docker-compose exec -T php sh -c "cd /code && ./bin/console hautelook:fixtures:load --env=dev --no-bundles --no-interaction"
       - name: Clear the cache
         run: docker-compose exec -T php sh -c "cd /code && ./bin/console cache:clear"
-      - name: Test the sinkhole
-        run: curl http://localhost/sinkhole/croute
       - name: Warm up the seat
         run: curl http://localhost/api/sinkhole/yolo -H "X-Api-Key:yolo"
-      - name: Install JDK
-        run: sudo apt-get install default-jre
-      - name: Download Gatling
-        run: wget https://repo1.maven.org/maven2/io/gatling/highcharts/gatling-charts-highcharts-bundle/3.3.1/gatling-charts-highcharts-bundle-3.3.1-bundle.zip
-      - name: Unzip Gatling
-        run: unzip gatling-charts-highcharts-bundle-3.3.1-bundle.zip -d gatling
-      - name: Run Gatling
-        run: sh gatling/gatling-charts-highcharts-bundle-3.3.1/bin/gatling.sh -s "apiparticulier.HeavyLoadSimulation" -rd "CI Run" -sf tests/gatling/simulations
-      - name: Upload Gatling report
-        uses: actions/upload-artifact@v1
-        with:
-          name: load-testing-report
-          path: gatling/gatling-charts-highcharts-bundle-3.3.1/results
