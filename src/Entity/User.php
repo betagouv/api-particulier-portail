@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -54,11 +55,17 @@ class User implements UserInterface
         $this->userPositions = new ArrayCollection();
     }
 
+    /**
+     * @Groups({"grafana"})
+     */
     public function getId(): ?UuidInterface
     {
         return $this->id;
     }
 
+    /**
+     * @Groups({"grafana"})
+     */
     public function getEmail(): ?string
     {
         return $this->email;
@@ -73,6 +80,7 @@ class User implements UserInterface
 
     /**
      * A visual identifier that represents this user.
+     * @Groups({"grafana"})
      *
      * @see UserInterface
      */
@@ -161,6 +169,9 @@ class User implements UserInterface
         return $this->email;
     }
 
+    /**
+     * @Groups({"grafana"})
+     */
     public function getName(): ?string
     {
         return $this->name;
@@ -173,6 +184,9 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @Groups({"grafana"})
+     */
     public function getSurname(): ?string
     {
         return $this->surname;
@@ -185,6 +199,9 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @Groups({"grafana"})
+     */
     public function getFullName(): string
     {
         return sprintf("%s %s", $this->getName(), $this->getSurname());

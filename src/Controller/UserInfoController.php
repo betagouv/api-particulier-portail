@@ -25,7 +25,9 @@ class UserInfoController extends AbstractController
      */
     public function userInfoAction()
     {
-        $serializedUser = $this->normalizer->normalize($this->getUser());
+        $serializedUser = $this->normalizer->normalize($this->getUser(), null, [
+            'groups' => 'grafana'
+        ]);
         return new JsonResponse($serializedUser);
     }
 }
