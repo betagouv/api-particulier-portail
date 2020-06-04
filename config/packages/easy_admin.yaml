@@ -127,3 +127,4 @@ easy_admin:
         exclude_fields:
           - createdAt
           - updatedAt
+          - roles
