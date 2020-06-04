@@ -42,3 +42,7 @@ services:
   App\EventSubscriber\AnalyticsSubscriber:
     arguments:
       $enabled: "%collect_request_analytics%"
+
+  App\Security\AuthApiAuthenticator:
+    arguments:
+      $dashboardUrl: "%env(DASHBOARD_URL)%"

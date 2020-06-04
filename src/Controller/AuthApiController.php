@@ -6,15 +6,31 @@ use Exception;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 
 class AuthApiController
 {
     /**
+     * @var SessionInterface
+     */
+    private $session;
+
+    public function __construct(SessionInterface $session)
+    {
+        $this->session = $session;
+    }
+
+    /**
      * @Route("/connect/auth-api", name="connect_auth-api_start")
      */
-    public function connectAction(ClientRegistry $clientRegistry)
+    public function connectAction(ClientRegistry $clientRegistry, Request $request)
     {
+        $referer = $request->headers->get('referer');
+
+        $this->session->set('original_target', $referer);
         return $clientRegistry->getClient('auth-api')->redirect([], []);
     }
 

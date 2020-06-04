@@ -12,6 +12,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -39,16 +40,30 @@ class AuthApiAuthenticator extends SocialAuthenticator
      */
     private $eventDispatcher;
 
+    /**
+     * @var SessionInterface
+     */
+    private $session;
+
+    /**
+     * @var string
+     */
+    private $dashboardUrl;
+
     public function __construct(
         ClientRegistry $clientRegistry,
         EntityManagerInterface $em,
         RouterInterface $router,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        SessionInterface $session,
+        string $dashboardUrl
     ) {
         $this->clientRegistry = $clientRegistry;
         $this->em = $em;
         $this->router = $router;
         $this->eventDispatcher = $eventDispatcher;
+        $this->session = $session;
+        $this->dashboardUrl = $dashboardUrl;
     }
 
     public function supports(Request $request)
@@ -92,7 +107,13 @@ class AuthApiAuthenticator extends SocialAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        $targetUrl = $this->router->generate('easyadmin');
+        $targetUrl = $this->session->get('original_target') ?? $this->router->generate('easyadmin');
+        $this->session->remove('original_target');
+
+        // If targetUrl if for the dashboard login, then redirect to the actual portal login route
+        if ($targetUrl === $this->dashboardUrl . '/login') {
+            $targetUrl = $targetUrl . '/generic_oauth';
+        }
 
         return new RedirectResponse($targetUrl);
     }
