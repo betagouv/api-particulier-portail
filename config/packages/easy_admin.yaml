@@ -88,9 +88,17 @@ easy_admin:
     Organization:
       class: App\Entity\Organization
       role: "ROLE_ADMIN"
+      form:
+        exclude_fields:
+          - createdAt
+          - updatedAt
     Scope:
       class: App\Entity\Scope
       role: "ROLE_ADMIN"
+      form:
+        exclude_fields:
+          - createdAt
+          - updatedAt
     Subscription:
       class: App\Entity\Subscription
       role: "ROLE_ADMIN"
@@ -102,6 +110,20 @@ easy_admin:
       label: User Position
       class: App\Entity\UserPosition
       role: "ROLE_ADMIN"
+      form:
+        fields:
+          - property: role
+            type: choice
+            type_options:
+              choices:
+                Functional: functional
+                Technical: technical
+          - application
+          - user
     User:
       class: App\Entity\User
       role: "ROLE_ADMIN"
+      form:
+        exclude_fields:
+          - createdAt
+          - updatedAt
