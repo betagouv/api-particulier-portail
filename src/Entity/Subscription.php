@@ -80,6 +80,6 @@ class Subscription
 
     public function __toString()
     {
-        return (string) $this->id;
+        return $this->getApi()->getName() . ' <> ' . $this->getApplication()->getName();
     }
 }
