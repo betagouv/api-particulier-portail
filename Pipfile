@@ -11,6 +11,9 @@ autopep8 = "*"
 
 [packages]
 flask = "*"
+flask-sqlalchemy = "*"
+psycopg2-binary = "*"
+flask-migrate = "*"
 
 [requires]
 python_version = "3.7"
