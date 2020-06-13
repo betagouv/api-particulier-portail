@@ -1,8 +1,10 @@
 from app.db import Api
 from flask import request, Response, current_app
+from security.decorator import require_api_key
 import requests
 
 
+@require_api_key
 def proxy(url=None, **kwargs):
     api = kwargs['api']
     if url:
