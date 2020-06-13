@@ -4,23 +4,18 @@ from flask import request, Response
 import requests
 
 
-@app.route('/')
-@app.route('/index')
-def index():
-    apis = Api.query.all()
-    return "Hello, croute!"
-
-
 def proxy(**kwargs):
     api = kwargs['api']
     r = requests.request(request.method, api.backend,
-                         params=request.args, stream=True)
+                         params=request.args)
     headers = dict(r.raw.headers)
+    if 'Transfer-Encoding' in headers:
+        del headers['Transfer-Encoding']
+    if 'Content-Encoding' in headers:
+        del headers['Content-Encoding']
+    print(headers)
 
-    def generate():
-        for chunk in r.raw.stream(decode_content=False):
-            yield chunk
-    out = Response(generate(), headers=headers)
+    out = Response(r.text, headers=headers)
     out.status_code = r.status_code
     return out
 
