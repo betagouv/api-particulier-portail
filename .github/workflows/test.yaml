@@ -1,0 +1,38 @@
+name: Tests
+
+on:
+  - push
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    env:
+      TEST_DATABASE_URL: postgresql://postgres:postgres@postgres:5432/portail
+      FLASK_APP: portal:create_app('app.settings.TestConfig')
+      FLASK_SKIP_DOTENV: 1
+      PORTAL_SECRET: s63:%x\b^^DrMep9
+      FLASK_ENV: production
+
+    services:
+      postgres:
+        image: timescale/timescaledb:latest-pg11
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: portail
+        ports:
+          - 5432:5432
+
+    steps:
+      - uses: actions/checkout@v2 # Checking out the repo
+
+      - name: Install dependecies
+        uses: VaultVulp/action-pipenv@v2.0.1
+        with:
+          command: install -d # Install all dependencies, including development ones
+
+      - name: Test
+        uses: VaultVulp/action-pipenv@v2.0.1
+        with:
+          command: run test # Run custom `test` command defined in the `[scripts]` block of Pipfile

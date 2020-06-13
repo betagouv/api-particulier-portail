@@ -5,6 +5,7 @@ verify_ssl = true
 
 [scripts]
 printvenv = "which python"
+test = "pytest"
 
 [dev-packages]
 autopep8 = "*"

@@ -21,7 +21,8 @@ def client(app):
 
 
 @pytest.fixture(autouse=True)
-def test_api(client):
-    api = ApiFactory(
-        name="Test API", backend="https://pokeapi.co/api/v2", path="test-api")
-    yield api
+def test_api(app, client):
+    with app.app_context():
+        api = ApiFactory(
+            name="Test API", backend="https://pokeapi.co/api/v2", path="test-api")
+        yield api
