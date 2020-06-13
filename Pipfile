@@ -16,6 +16,7 @@ psycopg2-binary = "*"
 flask-migrate = "*"
 requests = "*"
 pytest = "*"
+factory-boy = "*"
 
 [requires]
 python_version = "3.7"
