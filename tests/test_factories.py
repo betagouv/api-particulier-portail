@@ -5,7 +5,7 @@ from gateway.models import ApiKey
 
 def test_fixtures_loading():
     assert len(Api.query.all()) == 1
-    assert len(ApiKey.query.all()) == 1
+    assert len(ApiKey.query.all()) == 2
 
 
 def test_api_key_generation(test_api_key):

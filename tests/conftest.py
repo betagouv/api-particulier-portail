@@ -36,8 +36,22 @@ def test_api_key_value():
     return "".join((random.choice(lettersAndDigits) for i in range(30)))
 
 
+@pytest.fixture(scope="session")
+def test_inactive_api_key_value():
+    stringLength = 30
+    lettersAndDigits = string.ascii_letters + string.digits
+    return "".join((random.choice(lettersAndDigits) for i in range(30)))
+
+
 @pytest.fixture(autouse=True)
 def test_api_key(app, test_api_key_value):
     with app.app_context():
         api_key = ApiKeyFactory(key=test_api_key_value)
         yield api_key
+
+
+@pytest.fixture(autouse=True)
+def test_inactive_api_key(app, test_inactive_api_key_value):
+    with app.app_context():
+        inactive_api_key = ApiKeyFactory(key=test_inactive_api_key_value, active=False)
+        yield inactive_api_key
