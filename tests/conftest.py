@@ -1,10 +1,10 @@
 import os
 import tempfile
-
+import random
+import string
 import pytest
-
 from app import create_app
-from app.factories import ApiFactory
+from tests.factories import ApiFactory, ApiKeyFactory
 from app.settings import TestConfig
 
 
@@ -27,3 +27,17 @@ def test_api(app, client):
             name="Test API", backend="https://pokeapi.co/api/v2", path="test-api"
         )
         yield api
+
+
+@pytest.fixture
+def test_api_key_value():
+    stringLength = 30
+    lettersAndDigits = string.ascii_letters + string.digits
+    return "".join((random.choice(lettersAndDigits) for i in range(30)))
+
+
+@pytest.fixture
+def test_api_key(app, test_api_key_value):
+    with app.app_context():
+        api_key = ApiKeyFactory(key=test_api_key_value)
+        yield api_key
