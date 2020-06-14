@@ -13,6 +13,8 @@ jobs:
       FLASK_SKIP_DOTENV: 1
       PORTAL_SECRET: s63:%x\b^^DrMep9
       FLASK_ENV: production
+      CACHE_TYPE: redis
+      CACHE_REDIS_URL: redis://redis
 
     services:
       postgres:
@@ -21,8 +23,8 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: portail
-        ports:
-          - 5432:5432
+      redis:
+        image: redis:6
 
     steps:
       - uses: actions/checkout@v2 # Checking out the repo
