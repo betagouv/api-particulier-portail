@@ -11,6 +11,9 @@ class Config(object):
     PROJECT_ROOT = os.path.abspath(os.path.join(APP_DIR, os.pardir))
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     MIGRATE_ON_BOOT = False
+    CACHE_DEFAULT_TIMEOUT = os.environ.get("CACHE_DEFAULT_TIMEOUT", 300)
+    CACHE_TYPE = os.environ.get("CACHE_TYPE", "redis")
+    CACHE_REDIS_URL = os.environ.get("CACHE_REDIS_URL", "redis://localhost/")
 
 
 class ProdConfig(Config):

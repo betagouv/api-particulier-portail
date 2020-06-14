@@ -3,6 +3,7 @@ from flask import Flask
 from app.settings import ProdConfig
 from app.routes import build_routes
 from app.db import db, migrate
+from app.cache import cache
 
 
 def create_app(config_object=ProdConfig):
@@ -21,6 +22,7 @@ def register_extensions(app):
     """Register Flask extensions."""
     db.init_app(app)
     migrate.init_app(app, db)
+    cache.init_app(app)
     with app.app_context():
         if app.config["MIGRATE_ON_BOOT"]:
             db.create_all()
