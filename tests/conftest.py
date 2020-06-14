@@ -3,6 +3,7 @@ import tempfile
 import random
 import string
 import pytest
+from datetime import datetime, timedelta
 from app import create_app
 from tests.factories import ApiFactory, ApiKeyFactory
 from app.settings import TestConfig
@@ -43,6 +44,13 @@ def test_inactive_api_key_value():
     return "".join((random.choice(lettersAndDigits) for i in range(30)))
 
 
+@pytest.fixture(scope="session")
+def test_expired_api_key_value():
+    stringLength = 30
+    lettersAndDigits = string.ascii_letters + string.digits
+    return "".join((random.choice(lettersAndDigits) for i in range(30)))
+
+
 @pytest.fixture(autouse=True)
 def test_api_key(app, test_api_key_value):
     with app.app_context():
@@ -54,4 +62,15 @@ def test_api_key(app, test_api_key_value):
 def test_inactive_api_key(app, test_inactive_api_key_value):
     with app.app_context():
         inactive_api_key = ApiKeyFactory(key=test_inactive_api_key_value, active=False)
+        yield inactive_api_key
+
+
+@pytest.fixture(autouse=True)
+def test_expired_api_key(app, test_expired_api_key_value):
+    with app.app_context():
+        inactive_api_key = ApiKeyFactory(
+            key=test_expired_api_key_value,
+            active=True,
+            expires_at=datetime.now() - timedelta(seconds=10),
+        )
         yield inactive_api_key
