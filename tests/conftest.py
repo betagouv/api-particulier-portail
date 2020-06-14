@@ -24,5 +24,6 @@ def client(app):
 def test_api(app, client):
     with app.app_context():
         api = ApiFactory(
-            name="Test API", backend="https://pokeapi.co/api/v2", path="test-api")
+            name="Test API", backend="https://pokeapi.co/api/v2", path="test-api"
+        )
         yield api
