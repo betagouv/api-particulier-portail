@@ -21,7 +21,7 @@ def client(app):
 
 
 @pytest.fixture(autouse=True)
-def test_api(app, client):
+def test_api(app):
     with app.app_context():
         api = ApiFactory(
             name="Test API", backend="https://pokeapi.co/api/v2", path="test-api"
@@ -29,14 +29,14 @@ def test_api(app, client):
         yield api
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def test_api_key_value():
     stringLength = 30
     lettersAndDigits = string.ascii_letters + string.digits
     return "".join((random.choice(lettersAndDigits) for i in range(30)))
 
 
-@pytest.fixture
+@pytest.fixture(autouse=True)
 def test_api_key(app, test_api_key_value):
     with app.app_context():
         api_key = ApiKeyFactory(key=test_api_key_value)

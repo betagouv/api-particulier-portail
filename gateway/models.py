@@ -13,4 +13,4 @@ class ApiKey(db.Model):
     )
     active = db.Column(db.Boolean, nullable=False)
     expires_at = db.Column(db.DateTime(timezone=True), nullable=False)
-    hashed_key = db.Column(db.String(120), nullable=False, unique=True)
+    hashed_key = db.Column(db.String(128), nullable=False, unique=True)
