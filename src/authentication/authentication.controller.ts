@@ -10,9 +10,13 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { Request, Response } from 'express';
 import { Client, generators } from 'openid-client';
+import * as debugFactory from 'debug';
+import { Token } from 'src/authentication/token.type';
+
+const debug = debugFactory('application:authentication');
 
 type GraviteeTokenSet = {
-  token: string;
+  token: Token;
 };
 
 @Controller()
@@ -83,6 +87,7 @@ export class AuthenticationController {
 
     const token = graviteeExchangeResponse.data.token;
     session.token = token;
+    debug('authenticated with token: ', token);
 
     res.redirect('/');
   }
