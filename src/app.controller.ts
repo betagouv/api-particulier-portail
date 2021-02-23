@@ -9,6 +9,7 @@ import {
 import { ForbiddenExceptionFilter } from 'src/authentication/forbidden-exception.filter';
 import { IsAuthenticatedGuard } from 'src/authentication/is-authenticated.guard';
 import { SubscriptionService } from 'src/gravitee/subscription.service';
+import { Session as SessionType } from 'src/types';
 
 @Controller()
 @UseGuards(IsAuthenticatedGuard)
@@ -18,7 +19,7 @@ export class AppController {
 
   @Get()
   @Render('index')
-  async getHello(@Session() session: Record<string, any>) {
+  async getHello(@Session() session: SessionType) {
     const subscriptions = await this.subscriptionService.listActiveSubscriptions(
       session.token,
     );
