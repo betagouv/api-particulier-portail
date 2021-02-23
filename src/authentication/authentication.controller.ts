@@ -11,7 +11,10 @@ import { ConfigService } from '@nestjs/config';
 import { Request, Response } from 'express';
 import { Client, generators } from 'openid-client';
 import * as debugFactory from 'debug';
+import jwtDecode from 'jwt-decode';
 import { Token } from 'src/authentication/token.type';
+import { GraviteeTokenClaimsDTO } from 'src/authentication/dtos/gravitee-token-claims.dto';
+import { GraviteeTokenClaimsMapper } from 'src/authentication/dtos/mapper';
 
 const debug = debugFactory('application:authentication');
 
@@ -86,8 +89,13 @@ export class AuthenticationController {
     delete session.nonce;
 
     const token = graviteeExchangeResponse.data.token;
+    const tokenClaims = jwtDecode<GraviteeTokenClaimsDTO>(token);
+
     session.token = token;
-    debug('authenticated with token: ', token);
+    session.user = GraviteeTokenClaimsMapper.dtoToDomain(tokenClaims);
+
+    debug('authenticated with token:', token);
+    debug('authenticated with user:', session.user);
 
     res.redirect('/');
   }
