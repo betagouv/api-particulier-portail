@@ -35,5 +35,5 @@ lerna-debug.log*
 
 .env
 
-.cache
+.parcel-cache
 public
