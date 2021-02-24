@@ -29,6 +29,7 @@
     "@nestjs/config": "^0.6.3",
     "@nestjs/core": "^7.5.1",
     "@nestjs/platform-express": "^7.5.1",
+    "alpinejs": "^2.8.1",
     "debug": "^4.3.1",
     "express-handlebars": "^5.2.1",
     "express-session": "^1.17.1",
