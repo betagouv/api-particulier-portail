@@ -23,6 +23,6 @@ export class AppController {
     const subscriptions = await this.subscriptionService.listActiveSubscriptions(
       session.token,
     );
-    return { subscriptions };
+    return { subscriptions, user: session.user };
   }
 }

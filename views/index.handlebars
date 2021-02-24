@@ -1,0 +1,11 @@
+<div class="rf-mx-4w rf-mt-4w mb-auto">
+    <h3>Détails de votre jeton d'accès</h3>
+    {{#if subscriptions}}
+    {{#each subscriptions}}
+    {{> subscription }}
+    {{/each}}
+    {{else}}
+    {{> noToken }}
+    {{/if}}
+
+</div>
