@@ -17,16 +17,15 @@
                     <p class="rf-service__tagline">Gérez vos accès à API Particulier en toute simplicité</p>
                 </div>
             </div>
-            <div class="rf-header__tools">
-                <div class="rf-shortcuts">
+            <div class="rf-header__tools" x-data="{ dropdown: false }">
+                <div class="rf-shortcuts relative">
                     <ul class="rf-shortcuts__list">
                         <li class="rf-shortcuts__item">
-                            <a href="#" class="rf-link rf-fi-account-line" target="_self">{{
-                                user.email }}</a>
+                            <a class="rf-link rf-fi-account-line" target="_self" @click="dropdown = !dropdown">
+                                {{ user.email }}</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </div>
-    </div>
 </header>
