@@ -1,4 +1,4 @@
-<div class="rf-tile rf-tile--horizontal">
+<div class="rf-tile rf-tile--horizontal rf-mb-4w">
     <div class="rf-m-4w w-full flex flex-row items-center">
         <div><strong>{{ application.name }}</strong></div>
         <div class="flex-1 text-center">Jeton : <i>{{#each keys}}{{ id }}{{/each}}</i></div>
@@ -6,5 +6,4 @@
             <button @click="copyTokenToClipboard()" class="rf-btn" x-text="buttonText" />
         </div>
     </div>
-</div>
 </div>
