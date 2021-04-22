@@ -12,7 +12,7 @@ export default class extends Controller {
   }
 
   copy() {
-    navigator.clipboard.writeText(this.sourceTarget.innerHTML);
+    this.sourceTarget.select();
     document.execCommand('copy');
     this.buttonTarget.innerHTML = 'Jeton copié !';
   }
