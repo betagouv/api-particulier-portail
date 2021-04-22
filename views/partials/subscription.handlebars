@@ -1,9 +1,11 @@
 <div class="rf-tile rf-tile--horizontal rf-mb-4w">
-    <div class="rf-m-4w w-full flex flex-row items-center">
+    <div data-controller="clipboard" class="rf-m-4w w-full flex flex-row items-center">
         <div><strong>{{ application.name }}</strong></div>
-        <div class="flex-1 text-center mx-4">Jeton : <i>{{#each keys}}{{ id }}{{/each}}</i></div>
-        <div x-data="initTokenLine('{{#each keys}}{{ id }}{{/each}}')">
-            <button @click="copyTokenToClipboard()" class="rf-btn" x-text="buttonText" />
+        <div class="flex-1 text-center mx-4">
+            <div data-clipboard-target="source" type="text" value="{{#each keys}}{{ id }}{{/each}}" readonly
+                class="select-all">{{#each keys}}{{ id }}{{/each}}</div>
         </div>
+        <button data-action="clipboard#copy" data-clipboard-target="button" class="rf-btn hidden">Copier dans le
+            presse-papier</button>
     </div>
 </div>

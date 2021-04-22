@@ -1,28 +1,5 @@
-import '@gouvfr/all/dist/js/all.js';
-import 'alpinejs';
+import { Application } from 'stimulus';
+import ClipboardController from './clipboard.controller';
 
-const INITIAL_COPY_BUTTON_TEXT = 'Copier dans le presse-papier';
-const TRANSITION_COPY_BUTTON_TEXT = 'Jeton copié !';
-
-const initTokenLine = (token) => {
-  return {
-    token,
-    buttonText: INITIAL_COPY_BUTTON_TEXT,
-    async copyTokenToClipboard() {
-      const { state } = await navigator.permissions.query({
-        name: 'clipboard-write' as PermissionName,
-      });
-      if (state === 'denied') {
-        return;
-      }
-      navigator.clipboard.writeText(this.token);
-      this.buttonText = TRANSITION_COPY_BUTTON_TEXT;
-      setTimeout(() => {
-        this.buttonText = INITIAL_COPY_BUTTON_TEXT;
-      }, 3000);
-    },
-  };
-};
-
-// @ts-ignore
-global.initTokenLine = initTokenLine;
+const application = Application.start();
+application.register('clipboard', ClipboardController);
