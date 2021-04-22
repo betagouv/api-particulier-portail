@@ -1,7 +1,7 @@
 import '@gouvfr/all/dist/js/all.js';
 import 'alpinejs';
 
-const INITIAL_COPY_BUTTON_TEXT = 'Copier mon jeton';
+const INITIAL_COPY_BUTTON_TEXT = 'Copier dans le presse-papier';
 const TRANSITION_COPY_BUTTON_TEXT = 'Jeton copié !';
 
 const initTokenLine = (token) => {
