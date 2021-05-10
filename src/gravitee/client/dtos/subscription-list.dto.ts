@@ -6,8 +6,13 @@ import {
 
 export type SubscriptionListUnitDTO = {
   id: SubscriptionDTOId;
-  application: ApplicationDTOId;
-  plan: PlanDTOId;
+  application: {
+    id: ApplicationDTOId;
+    name: string;
+  };
+  plan: {
+    id: PlanDTOId;
+  };
 };
 
 export type SubscriptionListDTO = [SubscriptionListUnitDTO];
